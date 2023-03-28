@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SpecialRequest"
+    android:background="@color/light_gray">
+
+    <ImageView
+        android:id="@+id/topBackGround"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/background_top_profile"/>
+    <TextView
+        android:id="@+id/headingTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Special Request"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@color/white"
+       />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/background_info_profile"
+        android:padding="15dp"
+        android:id="@+id/containerView"
+        android:layout_below="@id/headingTop"
+        android:layout_marginTop="20dp"
+        >
+        <EditText
+            android:id="@+id/titleEditTextSpecialRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:background="@drawable/special_request_input_back_ground"
+            android:textSize="16dp"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:gravity="top"
+            android:background="@drawable/special_request_input_back_ground"
+            android:layout_below="@id/titleEditTextSpecialRequest"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="10dp"
+            android:hint="Write here..."
+            android:paddingStart="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="20dp"
+        android:text="Submit"
+        android:layout_below="@id/containerView"
+        android:background="@drawable/button_background"/>
+
+</RelativeLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Activities.InsertExperienceActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Add Job Experience"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/jobTitleHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/heading"
+            android:layout_marginTop="20dp"
+            android:text="Job Title*"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/jobTitleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobTitleHeading"
+            android:layout_marginTop="1dp"
+            android:hint="Ex: Intern"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/companyTitleHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobTitleEditText"
+            android:layout_marginTop="20dp"
+            android:text="Company Name*"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/companyTitleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/companyTitleHeading"
+            android:layout_marginTop="1dp"
+            android:hint="Ex: Devsinc (Islamabad)"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/companyTitleEditText"
+            android:layout_alignParentLeft="true"
+
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/checkboxText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/companyTitleEditText"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="27dp"
+            android:text="I am Currently Employed"
+            android:textColor="@color/darker_gray" />
+
+
+        <TextView
+            android:id="@+id/startDateHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/checkbox"
+            android:layout_marginTop="30dp"
+            android:text="Start date*"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/startDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/startDateHeading"
+            android:layout_marginTop="1dp"
+            android:hint="Start date"
+            android:textSize="16sp"
+            android:focusable="false"/>
+
+        <TextView
+            android:id="@+id/endDateHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/startDateEditText"
+            android:layout_marginTop="20dp"
+            android:text="End date*"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/endDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/endDateHeading"
+            android:layout_marginTop="1dp"
+            android:hint="End date"
+            android:textSize="16sp"
+            android:focusable="false"/>
+        <EditText
+            android:id="@+id/endDatePresentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/endDateHeading"
+            android:layout_marginTop="1dp"
+            android:hint="End date"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            android:focusable="false"/>
+
+        <TextView
+            android:id="@+id/jobDescriptionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/endDateEditText"
+            android:layout_marginTop="20dp"
+            android:text="Description"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/jobDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobDescriptionHeading"
+            android:layout_marginTop="1dp"
+            android:hint="Describe your role and skills you learned"
+            android:textSize="16sp"
+           />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:layout_below="@id/jobDescriptionEditText"
+            android:layout_marginTop="40dp"/>
+
+
+
+    </RelativeLayout>
+
+</ScrollView>

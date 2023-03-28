@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_search_alumni"
+        android:icon="@drawable/ic_alumni"
+        android:title="Alumni"/>
+    <item
+        android:id="@+id/bottom_nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"/>
+    <item
+        android:id="@+id/bottom_nav_discussion"
+        android:icon="@drawable/ic_discussion"
+        android:title="Panel"/>
+
+</menu>

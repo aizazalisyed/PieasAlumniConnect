@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Alumni PIEAS</string>
+    <string name="user_name">Syed Aizaz Ali</string>
+    <string name="user_mail">aizazali@gmail.com</string>
+    <string name="view_profile">View Profile</string>
+    <string name="special_request">Special Request</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Log Out</string>
+    <string name="exit">Exit</string>
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
+    <string name="welcomeMessageUserProfile">Hello, Syed Aizaz Ali!</string>
+    <string name="userNameProfile">Syed Aizaz Ali</string>
+    <string name="userMailProfile">aizazali@gmail.com</string>
+    <string name="userCnicProfile">42201-2546658-3</string>
+    <string name="userPhoneProfile">+923334636811</string>
+    <string name="userDepartmentProfile">Department Of Computer And Information Sciences</string>
+    <string name="userDegreeProfile">Bs Computer And Information Sciences</string>
+    <string name="userYearProfile">2023</string>
+    <string name="userCountryProfile">Pakistan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="date_of_post">10 hours ago</string>
+    <string name="title_activity_special_request">SpecialRequestActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_transform">Transform</string>
+    <string name="menu_reflow">Reflow</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
+        typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
+        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+        type specimen book"
+    </string>
+    <string name="fab_content_description">Represents a view to invoke an action</string>
+    <string name="image_view_item_transform_content_description">Represents an image view in the
+        item
+    </string>
+</resources>
