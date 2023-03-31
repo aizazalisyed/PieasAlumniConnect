@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -38,7 +39,7 @@ import retrofit2.Response;
 
 public class UserProfileActivity extends AppCompatActivity implements EditUserInfoDialog.EditUserInfoDialogListener {
 
-   Alumnus alumnus;
+    Alumnus alumnus;
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
     String defaultValue = "";
@@ -58,6 +59,11 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
     ImageView addProfilePicButton;
     ImageView alumniProfilePic;
     TextView alumniProfileName;
+    TextView alumniDegreeProgram;
+    TextView alumniDepartment;
+    TextView emailText;
+    TextView cnicText;
+    TextView batchDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +80,29 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         addProfilePicButton = findViewById(R.id.addProfilePicButton);
         alumniProfilePic = findViewById(R.id.alumniProfilePic);
         alumniProfileName = findViewById(R.id.alumniProfileName);
+        alumniDegreeProgram = findViewById(R.id.alumniDegreeProgram);
+        alumniDepartment = findViewById(R.id.alumniDepartment);
+        emailText = findViewById(R.id.emailText);
+        cnicText = findViewById(R.id.cnicText);
+        batchDuration = findViewById(R.id.batchDuration);
 
-        makeApiCall();
-        setProfilePic();
+        AlumnusViewModel alumnusViewModel = ViewModelProviders.of(this).get(AlumnusViewModel.class);
 
+      alumnusViewModel.getAlumnus().observe(this, new Observer<Alumnus>() {
+          @Override
+          public void onChanged(Alumnus alumnus) {
+              alumniProfileName.setText(alumnus.getName());
+              phoneNumber.setText(alumnus.getPhoneNumber());
+              batchDuration.setText(alumnus.getYearOfGrad());
+              cnicText.setText(alumnus.getCnic());
+              phoneNumber.setText(alumnus.getPhoneNumber());
+              country.setText(alumnus.getCountry());
+              emailText.setText(alumnus.getEmail());
+          }
+      });
+
+
+      alumnusViewModel.getProfilePic().observe(this, bitmap -> {alumniProfilePic.setImageBitmap(bitmap);});
 
         addExperienceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,49 +234,6 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
             this.country.setText(country);
         }
     }
-    private void setProfilePic(){
 
-        Call<ResponseBody> call = RetrofitClient.getUserService().fetchCaptcha(retrieveToken());
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        // display the image data in a ImageView or save it
-                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                        alumniProfilePic.setImageBitmap(bmp);
-                    } else {
-                        // TODO
-                    }
-                }
-                else {
-                    // TODO
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-            }
-        });
-    }
-    public String retrieveToken(){
-        SharedPreferences sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString(key, defaultValue);
-        return token;
-    }
-    public void makeApiCall(){
-        Call<Alumnus> alumnusCall = RetrofitClient.getUserService().getAlumnus(retrieveToken());
-        alumnusCall.enqueue(new Callback<Alumnus>() {
-            @Override
-            public void onResponse(Call<Alumnus> call, Response<Alumnus> response) {
-               alumnus = response.body();
-                alumniProfileName.setText(alumnus.getName());
-            }
-
-            @Override
-            public void onFailure(Call<Alumnus> call, Throwable t) {
-                alumnus = null;
-            }
-        });
-    }
 }

@@ -1,9 +1,12 @@
 package java.com.alumnimanagmentsystem.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Alumnus {
 
     int alumni_id;
     String cnic;
+    @SerializedName("name")
     String name;
     String phoneNumber;
     String country;
