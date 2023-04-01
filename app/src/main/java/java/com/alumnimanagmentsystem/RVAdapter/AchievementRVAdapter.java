@@ -9,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.com.alumnimanagmentsystem.Model.AchievementModel;
+import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
 
 public class AchievementRVAdapter extends RecyclerView.Adapter<AchievementRVAdapter.ViewHolder>{
 
-    ArrayList<AchievementModel> achievementModelArrayList;
+    ArrayList<AlumniAchievements> achievementModelArrayList;
     Context context;
 
-    public AchievementRVAdapter(ArrayList<AchievementModel> achievementModelArrayList, Context context) {
+    public AchievementRVAdapter(ArrayList<AlumniAchievements> achievementModelArrayList, Context context) {
         this.achievementModelArrayList = achievementModelArrayList;
         this.context = context;
     }
@@ -32,7 +32,7 @@ public class AchievementRVAdapter extends RecyclerView.Adapter<AchievementRVAdap
 
     @Override
     public void onBindViewHolder(@NonNull AchievementRVAdapter.ViewHolder holder, int position) {
-        AchievementModel achievementModel = achievementModelArrayList.get(position);
+        AlumniAchievements achievementModel = achievementModelArrayList.get(position);
         holder.title.setText(achievementModel.getTitle());
         holder.description.setText(achievementModel.getDescription());
     }

@@ -10,8 +10,16 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
+import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,6 +30,7 @@ public class AlumnusViewModel extends AndroidViewModel {
 
     MutableLiveData<Alumnus> alumnus = new MutableLiveData<>();
     MutableLiveData<Bitmap> bitmapMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<List<AlumniJobHistories>> alumniJobHistories = new MutableLiveData<>();
     Context context;
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
@@ -82,5 +91,8 @@ public class AlumnusViewModel extends AndroidViewModel {
         });
         return bitmapMutableLiveData;
     }
+
+
+
 
 }

@@ -10,17 +10,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.com.alumnimanagmentsystem.Model.JobHistoryModel;
+import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapter.ViewHolder> {
-    ArrayList<JobHistoryModel> jobHistoryModelArrayList;
+    List<AlumniJobHistories> jobHistoryModelArrayList;
     Context context;
 
-    public JobHistoryRVAdapter(ArrayList<JobHistoryModel> jobHistoryModelArrayList, Context context) {
+    public JobHistoryRVAdapter(List<AlumniJobHistories> jobHistoryModelArrayList, Context context) {
         this.jobHistoryModelArrayList = jobHistoryModelArrayList;
         this.context = context;
+    }
+
+    public void updateMovieList(List<AlumniJobHistories> list) {
+        this.jobHistoryModelArrayList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -32,10 +38,10 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
 
     @Override
     public void onBindViewHolder(@NonNull JobHistoryRVAdapter.ViewHolder holder, int position) {
-        JobHistoryModel jobHistoryModel = jobHistoryModelArrayList.get(position);
-        holder.jobTitle.setText(jobHistoryModel.getTitle());
+        AlumniJobHistories jobHistoryModel = jobHistoryModelArrayList.get(position);
+        holder.jobTitle.setText(jobHistoryModel.getJob_title());
         holder.jobDescription.setText(jobHistoryModel.getDescription());
-        holder.companyName.setText(jobHistoryModel.getCompanyName());
+        holder.companyName.setText(jobHistoryModel.getCompany_name());
 
     }
 
@@ -58,5 +64,4 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
             jobDescription = itemView.findViewById(R.id.jobDiscription);
         }
     }
-
 }
