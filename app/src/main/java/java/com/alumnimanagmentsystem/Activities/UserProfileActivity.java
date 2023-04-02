@@ -193,8 +193,6 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
             public void onResponse(Call<Alumnus> call, Response<Alumnus> response) {
                 if (response.body() != null) {
                    Alumnus alumnus = response.body();
-
-
                    jobHistoryModelArrayList = new ArrayList<>(Arrays.asList(alumnus.getAlumni_job_histories()));
                     putDataIntoJobHistoryRecyclerView(jobHistoryModelArrayList);
 

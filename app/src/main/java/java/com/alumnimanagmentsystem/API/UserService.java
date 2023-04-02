@@ -1,5 +1,6 @@
 package java.com.alumnimanagmentsystem.API;
 
+import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
 
 import okhttp3.ResponseBody;
@@ -22,4 +23,7 @@ public interface UserService {
 
     @GET("/alumni/me")
     Call<Alumnus> getAlumnus(@Header("Authorization") String authToken);
+
+    @POST("/alumni/job-history")
+        Call<AlumniJobHistories> postJobHistroy(@Header("Authorization") String authToken,@Body AlumniJobHistories alumniJobHistories);
 }

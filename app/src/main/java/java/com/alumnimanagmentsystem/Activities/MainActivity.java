@@ -6,24 +6,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.ViewModel.AlumnusViewModel;
 import java.com.alumnimanagmentsystem.ViewModel.MainActivityViewModel;
 import java.com.alumnimanagmentsystem.R;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView userNameHeaderLayout;
+    ImageView nav_user_photo;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -31,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     ImageView toolBarDrawerIcon;
     MainActivityViewModel mainActivityViewModel;
+    AlumnusViewModel alumnusViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        alumnusViewModel = new ViewModelProvider(this).get(AlumnusViewModel.class);
+
+
+
+
+
 
         // setting action bar
         setSupportActionBar(toolbar);
@@ -55,6 +69,23 @@ public class MainActivity extends AppCompatActivity {
         //setting on click listener in the header view;
         View headerView = navigationView.getHeaderView(0);
         headerView.setOnClickListener(v -> switchToProfileActivity());
+
+        userNameHeaderLayout = headerView.findViewById(R.id.userNameHeaderLayout);
+        nav_user_photo = headerView.findViewById(R.id.nav_user_photo);
+
+        alumnusViewModel.getProfilePic().observe(this, new Observer<Bitmap>() {
+            @Override
+            public void onChanged(Bitmap bitmap) {
+                nav_user_photo.setImageBitmap(bitmap);
+            }
+        });
+
+        alumnusViewModel.getAlumnus().observe(this, new Observer<Alumnus>() {
+            @Override
+            public void onChanged(Alumnus alumnus) {
+                userNameHeaderLayout.setText(alumnus.getName());
+            }
+        });
 
        // setting on click listener on the menu items in drawer
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -133,4 +164,6 @@ public class MainActivity extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(this, LoginActivity.class);
         startActivity(switchActivityIntent);
     }
+
+
 }

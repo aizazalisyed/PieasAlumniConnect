@@ -10,6 +10,14 @@ public class AlumniJobHistories {
     String description;
     int alumni_id;
 
+    public AlumniJobHistories(String job_title, String job_start_date, String job_end_date, String company_name, String description) {
+        this.job_title = job_title;
+        this.job_start_date = job_start_date;
+        this.job_end_date = job_end_date;
+        this.company_name = company_name;
+        this.description = description;
+    }
+
     public int getJob_history_id() {
         return job_history_id;
     }
