@@ -123,7 +123,6 @@ public class InsertExperienceActivity extends AppCompatActivity {
                 if (companyName.getText().toString().isEmpty() == true || jobTitle.getText().toString().isEmpty() == true || startDate.getText().toString().isEmpty() == true || endDate.getText().toString().isEmpty() == true) {
                     Toast.makeText(context, "Information incomplete", Toast.LENGTH_SHORT).show();
                 } else {
-
                     sendDataViaAPI();
                     SwitchToUserProfileActivity();
                     Animatoo.INSTANCE.animateSlideDown(context);

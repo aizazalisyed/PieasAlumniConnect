@@ -2,13 +2,21 @@ package java.com.alumnimanagmentsystem.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PackageManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
@@ -26,17 +33,24 @@ import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.R;
 import java.com.alumnimanagmentsystem.RVAdapter.AchievementRVAdapter;
 import java.com.alumnimanagmentsystem.RVAdapter.JobHistoryRVAdapter;
+import java.com.alumnimanagmentsystem.RealPathUtil;
 import java.com.alumnimanagmentsystem.ViewModel.AlumnusViewModel;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserProfileActivity extends AppCompatActivity implements EditUserInfoDialog.EditUserInfoDialogListener {
 
+    String path;
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
     String defaultValue = "";
@@ -141,9 +155,19 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         addProfilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.Companion.with(UserProfileActivity.this)
-                        .crop().
-                        start();
+
+                if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent, 10);
+                }
+                else {
+                    ActivityCompat.requestPermissions(UserProfileActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
+
 
             }
         });
@@ -151,11 +175,28 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        SwitchToMainActivity();
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uri = data.getData();
-        alumniProfilePic.setImageURI(uri);
-    }
+
+
+           if(requestCode == 10 && resultCode == Activity.RESULT_OK){
+               Uri uri = data.getData();
+               Context context = UserProfileActivity.this;
+               path = RealPathUtil.getRealPath(context, uri);
+               Bitmap bitmap = BitmapFactory.decodeFile(path);
+               alumniProfilePic.setImageBitmap(bitmap);
+               sendPicViaApi();
+
+           }
+
+       }
 
 
     private void SwitchToInsertExperienceActivity(){
@@ -227,5 +268,31 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         recyclerViewAchievement.setAdapter(achievementRVAdapter);
         achievementRVAdapter.notifyDataSetChanged();
     }
+    private void SwitchToMainActivity(){
+        Intent switchActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(switchActivityIntent);
+    }
+
+    private void sendPicViaApi(){
+
+        File file = new File(path);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+
+        MultipartBody.Part body = MultipartBody.Part.createFormData("photo",file.getName(),requestFile);
+
+        Call<ResponseBody> call = RetrofitClient.getUserService().postImage(retrieveToken(),body);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 }

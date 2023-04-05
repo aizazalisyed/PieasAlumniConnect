@@ -7,6 +7,11 @@ public class AlumniAchievements {
     String description;
     int alumni_id;
 
+    public AlumniAchievements(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public int getAchievement_id() {
         return achievement_id;
     }
