@@ -18,6 +18,11 @@ public class Alumnus {
     String yearOfGrad;
     AlumniJobHistories[] alumni_job_histories;
     AlumniAchievements[] alumni_achievements;
+    Degree degree;
+
+    public Degree getDegree() {
+        return degree;
+    }
 
     public int getAlumni_id() {
         return alumni_id;

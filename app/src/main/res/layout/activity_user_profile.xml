@@ -260,9 +260,11 @@
             android:layout_below="@id/personalInfoView"
             android:layout_marginTop="10dp"
             android:background="@color/white"
+            android:padding="10dp"
             >
 
             <ImageView
+                android:id="@+id/editExperienceButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_edit"
@@ -290,8 +292,6 @@
                 android:text="Experience"
                 android:textColor="@color/black"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="10dp"
                 />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -314,6 +314,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/white"
             android:layout_marginBottom="10dp"
+            android:padding="10dp"
             >
             <ImageView
                 android:layout_width="30dp"
@@ -342,8 +343,6 @@
                 android:text="Achievements"
                 android:textColor="@color/black"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="10dp"
                 />
 
             <androidx.recyclerview.widget.RecyclerView

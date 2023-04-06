@@ -38,6 +38,10 @@ public interface UserService {
     Call<AlumniAchievements> postAchievement(@Header("Authorization") String authToken,@Body AlumniAchievements alumniAchievements);
 
 
+//    @Multipart
+//    @POST("/alumni/me/avatar")
+//    Call<ResponseBody> postImage(@Header("Authorization") String authToken , @Part MultipartBody.Part photo);
+
     @Multipart
     @POST("/alumni/me/avatar")
     Call<ResponseBody> postImage(@Header("Authorization") String authToken , @Part MultipartBody.Part photo);

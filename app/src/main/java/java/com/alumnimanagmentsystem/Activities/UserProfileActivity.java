@@ -77,6 +77,7 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
     TextView emailText;
     TextView cnicText;
     TextView batchDuration;
+    ImageView editExperienceButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         emailText = findViewById(R.id.emailText);
         cnicText = findViewById(R.id.cnicText);
         batchDuration = findViewById(R.id.batchDuration);
+        editExperienceButton = findViewById(R.id.editExperienceButton);
 
 
 
@@ -119,6 +121,8 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
               phoneNumber.setText(alumnus.getPhoneNumber());
               country.setText(alumnus.getCountry());
               emailText.setText(alumnus.getEmail());
+              alumniDepartment.setText(alumnus.getDegree().getDepartment().getDepartment_name());
+              alumniDegreeProgram.setText(alumnus.getDegree().getDegree_name());
           }
       });
 
@@ -172,6 +176,14 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
             }
         });
 
+        editExperienceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SwitchToEditJobHistoryActivity();
+            }
+        });
+
+
     }
 
     @Override
@@ -209,6 +221,14 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         Intent switchActivityIntent = new Intent(this, InsertAchievementActivity.class);
         startActivity(switchActivityIntent);
     }
+
+    private void SwitchToEditJobHistoryActivity(){
+
+        Intent switchActivityIntent = new Intent(this, EditJobHistoryActivity.class);
+        startActivity(switchActivityIntent);
+    }
+
+
     private void openDialog(){
          EditUserInfoDialog editUserInfoDialog = new EditUserInfoDialog();
          editUserInfoDialog.show(getSupportFragmentManager(), "edit user information dialog");

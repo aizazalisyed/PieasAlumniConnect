@@ -7,7 +7,8 @@ public class AlumniAchievements {
     String description;
     int alumni_id;
 
-    public AlumniAchievements(String title, String description) {
+    public AlumniAchievements(String type, String title, String description) {
+        this.type = type;
         this.title = title;
         this.description = description;
     }

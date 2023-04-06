@@ -35,6 +35,11 @@ public class AchievementRVAdapter extends RecyclerView.Adapter<AchievementRVAdap
         AlumniAchievements achievementModel = achievementModelArrayList.get(position);
         holder.title.setText(achievementModel.getTitle());
         holder.description.setText(achievementModel.getDescription());
+
+        if(holder.description.getText().toString().isEmpty()){
+            holder.description.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

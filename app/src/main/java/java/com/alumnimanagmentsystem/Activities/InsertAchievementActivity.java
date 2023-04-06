@@ -73,8 +73,9 @@ public class InsertAchievementActivity extends AppCompatActivity {
 
         String achievementTitleString = AchievementTitleEditText.getText().toString();
         String achievementDescriptionString = jobDescriptionEditText.getText().toString();
+        String achievementTypeString = "Award";
 
-        AlumniAchievements alumniAchievements = new AlumniAchievements(achievementTitleString, achievementDescriptionString);
+        AlumniAchievements alumniAchievements = new AlumniAchievements(achievementTypeString,achievementTitleString, achievementDescriptionString);
 
         Call<AlumniAchievements> call = RetrofitClient.getUserService().postAchievement(retrieveToken(),alumniAchievements);
         call.enqueue(new Callback<AlumniAchievements>() {

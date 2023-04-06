@@ -24,11 +24,6 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
         this.context = context;
     }
 
-    public void updateMovieList(List<AlumniJobHistories> list) {
-        this.jobHistoryModelArrayList = list;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public JobHistoryRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +37,10 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
         holder.jobTitle.setText(jobHistoryModel.getJob_title());
         holder.jobDescription.setText(jobHistoryModel.getDescription());
         holder.companyName.setText(jobHistoryModel.getCompany_name());
+
+        if( holder.jobDescription.getText().toString().isEmpty()){
+            holder.jobDescription.setVisibility(View.GONE);
+        }
 
     }
 
