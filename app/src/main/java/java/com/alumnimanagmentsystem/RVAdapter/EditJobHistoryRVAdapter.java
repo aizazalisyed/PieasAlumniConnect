@@ -2,6 +2,7 @@ package java.com.alumnimanagmentsystem.RVAdapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.com.alumnimanagmentsystem.Activities.EditJobHistoryFieldActivity;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.R;
 import java.util.List;
 
 public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistoryRVAdapter.ViewHolder>{
 
+
+    String jobTitle,jobDescription, companyName, fromDate, toDate;
+    int jobHistoryID;
     List<AlumniJobHistories> jobHistoryModelArrayList;
     Context context;
 
@@ -40,9 +45,25 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
     public void onBindViewHolder(@NonNull EditJobHistoryRVAdapter.ViewHolder holder, int position) {
 
         AlumniJobHistories jobHistoryModel = jobHistoryModelArrayList.get(position);
+
+
+        // saving data to be sent via Intent
+
+        jobHistoryID = jobHistoryModel.getJob_history_id();
+        jobTitle = jobHistoryModel.getJob_title();
+        jobDescription = jobHistoryModel.getDescription();
+        companyName = jobHistoryModel.getCompany_name();
+        fromDate = jobHistoryModel.getJob_start_date();
+        toDate = jobHistoryModel.getJob_end_date();
+
+        // binding data
+
         holder.jobTitle.setText(jobHistoryModel.getJob_title());
         holder.jobDescription.setText(jobHistoryModel.getDescription());
         holder.companyName.setText(jobHistoryModel.getCompany_name());
+        holder.fromDate.setText(jobHistoryModel.getJob_start_date());
+        holder.toDate.setText(jobHistoryModel.getJob_end_date());
+
 
         if( holder.jobDescription.getText().toString().isEmpty()){
             holder.jobDescription.setVisibility(View.GONE);
@@ -51,7 +72,15 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "click on edit button", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(context, EditJobHistoryFieldActivity.class);
+                i.putExtra("jobHistoryID", jobHistoryID);
+                i.putExtra("jobTitle", jobTitle);
+                i.putExtra("jobDescription",jobDescription);
+                i.putExtra("companyName",companyName);
+                i.putExtra("fromDate",fromDate);
+                i.putExtra("toDate",toDate);
+                context.startActivity(i);
             }
         });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +101,7 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
         TextView companyName;
         TextView jobDescription;
         ImageView editButton, deleteButton;
+        TextView fromDate, toDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +111,9 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
             jobDescription = itemView.findViewById(R.id.jobDiscription);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            fromDate = itemView.findViewById(R.id.fromDate);
+            toDate = itemView.findViewById(R.id.toDate);
+
         }
     }
     private void deleteAlert(){

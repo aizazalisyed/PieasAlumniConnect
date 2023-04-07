@@ -19,6 +19,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.EditJobHistoryFieldActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activities.EditJobHistoryActivity"
             android:exported="false">
             <meta-data
@@ -26,7 +33,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".EditAchievementActivity"
+            android:name=".Activities.EditAchievementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -76,13 +83,6 @@
         </activity>
         <activity
             android:name=".Activities.SpecialRequest"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".SpecialRequestActivity"
             android:exported="false"
             android:label="@string/title_activity_special_request"
             android:resizeableActivity="true"

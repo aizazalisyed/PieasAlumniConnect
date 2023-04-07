@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -37,13 +38,15 @@ public interface UserService {
     @POST("/alumni/achievements")
     Call<AlumniAchievements> postAchievement(@Header("Authorization") String authToken,@Body AlumniAchievements alumniAchievements);
 
-
-//    @Multipart
-//    @POST("/alumni/me/avatar")
-//    Call<ResponseBody> postImage(@Header("Authorization") String authToken , @Part MultipartBody.Part photo);
-
     @Multipart
     @POST("/alumni/me/avatar")
     Call<ResponseBody> postImage(@Header("Authorization") String authToken , @Part MultipartBody.Part photo);
+
+    @PATCH("/alumni/job-history/{id}")
+    Call<AlumniJobHistories> patchJobHistories(@Header("Authorization") String authToken, @Body AlumniJobHistories alumniJobHistories,@Path("id") int id);
+
+
+
+
 
 }
