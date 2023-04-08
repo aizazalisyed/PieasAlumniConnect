@@ -11,6 +11,7 @@ import okhttp3.ResponseBody;
 import okhttp3.internal.http1.HeadersReader;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -44,6 +45,9 @@ public interface UserService {
 
     @PATCH("/alumni/job-history/{id}")
     Call<AlumniJobHistories> patchJobHistories(@Header("Authorization") String authToken, @Body AlumniJobHistories alumniJobHistories,@Path("id") int id);
+
+    @DELETE("/alumni/job-history/{id}")
+    Call<AlumniJobHistories> deleteJobHistories(@Header("Authorization") String authToken,@Path("id") int id);
 
 
 

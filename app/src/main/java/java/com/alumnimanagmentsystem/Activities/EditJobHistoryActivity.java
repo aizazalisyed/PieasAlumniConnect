@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -73,5 +74,16 @@ public class EditJobHistoryActivity extends AppCompatActivity {
         editJobHistoryRVAdapter = new EditJobHistoryRVAdapter(alumniJobHistoriesList, this);
         editJobHistoryRecyclerView.setAdapter(editJobHistoryRVAdapter);
         editJobHistoryRVAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        SwitchToUserProfileActivity();
+    }
+
+    private void SwitchToUserProfileActivity(){
+        Intent switchActivityIntent = new Intent(this, UserProfileActivity.class);
+        startActivity(switchActivityIntent);
     }
 }

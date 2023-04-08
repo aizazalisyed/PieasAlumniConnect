@@ -91,9 +91,7 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
     public void MakeApiCall() {
 
 
-       // todo: in strings ko edittext.gettext() sy change karna ha
-
-        AlumniJobHistories alumniJobHistories = new AlumniJobHistories(jobTitleString, fromDateString, toDateString, companyNameString, jobDescriptionString);
+        AlumniJobHistories alumniJobHistories = new AlumniJobHistories(jobTitle.getText().toString(), fromDate.getText().toString(), toDate.getText().toString(), companyName.getText().toString(), jobDescription.getText().toString());
 
         Call<AlumniJobHistories> call = RetrofitClient.getUserService().patchJobHistories(retrieveToken(), alumniJobHistories, jobHistoryID);
         call.enqueue(new Callback<AlumniJobHistories>() {

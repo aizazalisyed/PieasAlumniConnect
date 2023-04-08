@@ -3,10 +3,10 @@ package java.com.alumnimanagmentsystem.RVAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,13 +15,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Activities.EditJobHistoryFieldActivity;
+import java.com.alumnimanagmentsystem.Activities.UserProfileActivity;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.R;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistoryRVAdapter.ViewHolder>{
 
+
+    String fileName = "My_Pref";
+    String key = "TOKEN_STRING";
+    String defaultValue = "";
 
     String jobTitle,jobDescription, companyName, fromDate, toDate;
     int jobHistoryID;
@@ -46,16 +56,6 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
 
         AlumniJobHistories jobHistoryModel = jobHistoryModelArrayList.get(position);
 
-
-        // saving data to be sent via Intent
-
-        jobHistoryID = jobHistoryModel.getJob_history_id();
-        jobTitle = jobHistoryModel.getJob_title();
-        jobDescription = jobHistoryModel.getDescription();
-        companyName = jobHistoryModel.getCompany_name();
-        fromDate = jobHistoryModel.getJob_start_date();
-        toDate = jobHistoryModel.getJob_end_date();
-
         // binding data
 
         holder.jobTitle.setText(jobHistoryModel.getJob_title());
@@ -72,21 +72,20 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(context, EditJobHistoryFieldActivity.class);
-                i.putExtra("jobHistoryID", jobHistoryID);
-                i.putExtra("jobTitle", jobTitle);
-                i.putExtra("jobDescription",jobDescription);
-                i.putExtra("companyName",companyName);
-                i.putExtra("fromDate",fromDate);
-                i.putExtra("toDate",toDate);
+                i.putExtra("jobHistoryID", jobHistoryModel.getJob_history_id());
+                i.putExtra("jobTitle", jobHistoryModel.getJob_title());
+                i.putExtra("jobDescription",jobHistoryModel.getDescription());
+                i.putExtra("companyName",jobHistoryModel.getCompany_name());
+                i.putExtra("fromDate",jobHistoryModel.getJob_start_date());
+                i.putExtra("toDate",jobHistoryModel.getJob_end_date());
                 context.startActivity(i);
             }
         });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteAlert();
+                deleteAlert(jobHistoryModel.getJob_history_id());
             }
         });
     }
@@ -116,7 +115,7 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
 
         }
     }
-    private void deleteAlert(){
+    private void deleteAlert(int id){
         new AlertDialog.Builder(context)
                 .setTitle("Report Post")
                 .setMessage("Are you sure you want to delete this?")
@@ -126,7 +125,21 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Continue with delete operation
-                        Toast.makeText(context, "click on delete button", Toast.LENGTH_SHORT).show();
+
+                        Call<AlumniJobHistories> call = RetrofitClient.getUserService().deleteJobHistories(retrieveToken(),id);
+
+                        call.enqueue(new Callback<AlumniJobHistories>() {
+                            @Override
+                            public void onResponse(Call<AlumniJobHistories> call, Response<AlumniJobHistories> response) {
+                                Toast.makeText(context, "click on delete button", Toast.LENGTH_SHORT).show();
+                                SwitchToUserProfileActivity();
+                            }
+
+                            @Override
+                            public void onFailure(Call<AlumniJobHistories> call, Throwable t) {
+
+                            }
+                        });
                     }
                 })
 
@@ -135,4 +148,15 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
+    public String retrieveToken() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString(key, defaultValue);
+        return token;
+    }
+    private void SwitchToUserProfileActivity(){
+        Intent switchActivityIntent = new Intent(context, UserProfileActivity.class);
+        context.startActivity(switchActivityIntent);
+    }
+
 }
