@@ -91,12 +91,15 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
     public void MakeApiCall() {
 
 
-        AlumniJobHistories alumniJobHistories = new AlumniJobHistories(jobTitle.getText().toString(), fromDate.getText().toString(), toDate.getText().toString(), companyName.getText().toString(), jobDescription.getText().toString());
+        AlumniJobHistories alumniJobHistories = new AlumniJobHistories(jobTitle.getText().toString(),
+                fromDate.getText().toString(), toDate.getText().toString(), companyName.getText().toString(), jobDescription.getText().toString());
 
         Call<AlumniJobHistories> call = RetrofitClient.getUserService().patchJobHistories(retrieveToken(), alumniJobHistories, jobHistoryID);
         call.enqueue(new Callback<AlumniJobHistories>() {
             @Override
             public void onResponse(Call<AlumniJobHistories> call, Response<AlumniJobHistories> response) {
+
+                SwitchToUserProfileActivity();
                 Toast.makeText(EditJobHistoryFieldActivity.this, "Changes Saved", Toast.LENGTH_SHORT).show();
             }
 
@@ -123,5 +126,9 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         SwitchToJobHistoryEditActivity();
+    }
+    private void SwitchToUserProfileActivity(){
+        Intent switchActivityIntent = new Intent(EditJobHistoryFieldActivity.this, UserProfileActivity.class);
+        startActivity(switchActivityIntent);
     }
 }

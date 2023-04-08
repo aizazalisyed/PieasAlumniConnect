@@ -62,8 +62,6 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
     JobHistoryRVAdapter jobHistoryRVAdapter;
     RecyclerView recyclerViewAchievement;
     AchievementRVAdapter achievementRVAdapter;
-    RelativeLayout achievementView;
-    RelativeLayout jobHistoryView;
     ImageView addExperienceButton;
     ImageView addAchievementButton;
     ImageView editPersonalInfo;
@@ -78,6 +76,7 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
     TextView cnicText;
     TextView batchDuration;
     ImageView editExperienceButton;
+    ImageView editAchievementButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +99,7 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         cnicText = findViewById(R.id.cnicText);
         batchDuration = findViewById(R.id.batchDuration);
         editExperienceButton = findViewById(R.id.editExperienceButton);
+        editAchievementButton = findViewById(R.id.editAchievementButton);
 
 
 
@@ -183,6 +183,12 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
             }
         });
 
+        editAchievementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SwitchToEditAchievementActivity();
+            }
+        });
 
     }
 
@@ -225,6 +231,12 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
     private void SwitchToEditJobHistoryActivity(){
 
         Intent switchActivityIntent = new Intent(this, EditJobHistoryActivity.class);
+        startActivity(switchActivityIntent);
+    }
+
+    private void SwitchToEditAchievementActivity(){
+
+        Intent switchActivityIntent = new Intent(this, EditAchievementActivity.class);
         startActivity(switchActivityIntent);
     }
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,13 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
         holder.jobTitle.setText(jobHistoryModel.getJob_title());
         holder.jobDescription.setText(jobHistoryModel.getDescription());
         holder.companyName.setText(jobHistoryModel.getCompany_name());
+        holder.fromDate.setText(jobHistoryModel.getJob_start_date());
+
+        if(jobHistoryModel.getJob_end_date().equals("0000-00-00")){
+            holder.toDate.setText("Present");
+        }
+        else holder.toDate.setText(jobHistoryModel.getJob_end_date());
+
 
         if( holder.jobDescription.getText().toString().isEmpty()){
             holder.jobDescription.setVisibility(View.GONE);
@@ -54,6 +62,8 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
         TextView jobTitle;
         TextView companyName;
         TextView jobDescription;
+        TextView fromDate, toDate;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +71,8 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
             jobTitle = itemView.findViewById(R.id.jobTitle);
             companyName = itemView.findViewById(R.id.companyName);
             jobDescription = itemView.findViewById(R.id.jobDiscription);
+            fromDate = itemView.findViewById(R.id.fromDate);
+            toDate = itemView.findViewById(R.id.toDate);
         }
     }
 }

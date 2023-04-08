@@ -103,14 +103,12 @@ public class InsertExperienceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (checked == false) {
-                    presentWorking.setVisibility(View.VISIBLE);
-                    endDate.setVisibility(View.INVISIBLE);
-                    presentWorking.setText("Present");
+                if (!checked) {
+                    endDate.setText("Present");
                     checked = true;
                 } else {
-                    presentWorking.setVisibility(View.INVISIBLE);
-                    endDate.setVisibility(View.VISIBLE);
+
+                    endDate.setText("");
                     checked = false;
                 }
             }
@@ -120,7 +118,7 @@ public class InsertExperienceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (companyName.getText().toString().isEmpty() == true || jobTitle.getText().toString().isEmpty() == true || startDate.getText().toString().isEmpty() == true || endDate.getText().toString().isEmpty() == true) {
+                if (companyName.getText().toString().isEmpty() || jobTitle.getText().toString().isEmpty() || startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty()) {
                     Toast.makeText(context, "Information incomplete", Toast.LENGTH_SHORT).show();
                 } else {
                     sendDataViaAPI();
