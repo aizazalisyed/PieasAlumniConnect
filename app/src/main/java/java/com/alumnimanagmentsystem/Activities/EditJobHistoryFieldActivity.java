@@ -79,7 +79,6 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
                     Toast.makeText(EditJobHistoryFieldActivity.this, "Information incomplete", Toast.LENGTH_SHORT).show();
                 } else {
                     MakeApiCall();
-                    SwitchToJobHistoryEditActivity();
                 }
 
             }

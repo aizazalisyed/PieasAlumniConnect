@@ -49,6 +49,12 @@ public interface UserService {
     @DELETE("/alumni/job-history/{id}")
     Call<AlumniJobHistories> deleteJobHistories(@Header("Authorization") String authToken,@Path("id") int id);
 
+    @DELETE("/alumni/achievements/{id}")
+    Call<AlumniAchievements> deleteAchievement(@Header("Authorization") String authToken,@Path("id") int id);
+
+    @PATCH("/alumni/achievements/{id}")
+    Call<AlumniAchievements> patchAchievement(@Header("Authorization") String authToken, @Body AlumniAchievements alumniAchievements,@Path("id") int id);
+
 
 
 
