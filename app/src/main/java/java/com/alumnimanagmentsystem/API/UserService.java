@@ -3,12 +3,11 @@ package java.com.alumnimanagmentsystem.API;
 import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.com.alumnimanagmentsystem.Model.SpecialRequest;
+import java.com.alumnimanagmentsystem.Model.SpecialRequests;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http1.HeadersReader;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -19,7 +18,6 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Url;
 
 public interface UserService {
 
@@ -43,7 +41,7 @@ public interface UserService {
     @POST("/alumni/me/avatar")
     Call<ResponseBody> postImage(@Header("Authorization") String authToken , @Part MultipartBody.Part photo);
 
-    @PATCH("/alumni/job-history/{id}")
+    @PATCH("/alumni/job-hCall<Alumnus> alumnusCall = RetrofitClient.getUserService().istory/{id}")
     Call<AlumniJobHistories> patchJobHistories(@Header("Authorization") String authToken, @Body AlumniJobHistories alumniJobHistories,@Path("id") int id);
 
     @DELETE("/alumni/job-history/{id}")
@@ -55,8 +53,9 @@ public interface UserService {
     @PATCH("/alumni/achievements/{id}")
     Call<AlumniAchievements> patchAchievement(@Header("Authorization") String authToken, @Body AlumniAchievements alumniAchievements,@Path("id") int id);
 
+    @GET("/me/special-requests")
+    Call<SpecialRequests> getSpecialRequests(@Header("Authorization") String authToken);
 
-
-
-
+    @POST("/special-requests")
+    Call<SpecialRequest> postSpecialRequest(@Header("Authorization") String authToken, @Body SpecialRequest specialRequest);
 }

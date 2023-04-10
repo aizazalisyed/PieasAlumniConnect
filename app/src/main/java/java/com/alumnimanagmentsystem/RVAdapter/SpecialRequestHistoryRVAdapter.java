@@ -9,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.R;
-import java.com.alumnimanagmentsystem.Model.SpecialRequestHistoryRVModel;
 import java.util.ArrayList;
 
 public class SpecialRequestHistoryRVAdapter extends RecyclerView.Adapter<SpecialRequestHistoryRVAdapter.ViewHolder> {
 
-    ArrayList<SpecialRequestHistoryRVModel> specialRequestHistoryRVModels;
+    ArrayList<SpecialRequest> specialRequestHistoryRVModels;
     Context context;
 
-    public SpecialRequestHistoryRVAdapter(ArrayList<SpecialRequestHistoryRVModel> specialRequestHistoryRVModels, Context context) {
+    public SpecialRequestHistoryRVAdapter(ArrayList<SpecialRequest> specialRequestHistoryRVModels, Context context) {
         this.specialRequestHistoryRVModels = specialRequestHistoryRVModels;
         this.context = context;
     }
@@ -32,9 +32,9 @@ public class SpecialRequestHistoryRVAdapter extends RecyclerView.Adapter<Special
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SpecialRequestHistoryRVModel specialRequestHistoryRVModel = specialRequestHistoryRVModels.get(position);
-        holder.title.setText(specialRequestHistoryRVModel.getTitle());
-        holder.description.setText(specialRequestHistoryRVModel.getDescription());
+        SpecialRequest specialRequest = specialRequestHistoryRVModels.get(position);
+        holder.title.setText(specialRequest.getSubject());
+        holder.description.setText(specialRequest.getDescription());
     }
 
     @Override

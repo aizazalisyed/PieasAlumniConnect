@@ -4,23 +4,38 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.com.alumnimanagmentsystem.API.RetrofitClient;
+import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.Model.SpecialRequest;
+import java.com.alumnimanagmentsystem.Model.SpecialRequests;
 import java.com.alumnimanagmentsystem.R;
 import java.com.alumnimanagmentsystem.RVAdapter.SpecialRequestHistoryRVAdapter;
-import java.com.alumnimanagmentsystem.Model.SpecialRequestHistoryRVModel;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SpecialRequestHistoryActivity extends AppCompatActivity {
 
+    String fileName = "My_Pref";
+    String key = "TOKEN_STRING";
+    String defaultValue = "";
     FloatingActionButton fab;
     RecyclerView recyclerView;
-    ArrayList<SpecialRequestHistoryRVModel> specialRequestHistoryRVModelArrayList;
+    List<SpecialRequest> specialRequestArrayList;
     SpecialRequestHistoryRVAdapter specialRequestHistoryRVAdapter;
     TextView warning;
 
@@ -32,22 +47,18 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.requestHistoryRecyclerView);
         warning = findViewById(R.id.warningHistory);
-        specialRequestHistoryRVModelArrayList = new ArrayList<>();
+
+        specialRequestArrayList = new ArrayList<>();
+
+        recyclerView.setVisibility(View.GONE);
+        warning.setVisibility(View.VISIBLE);
+
+       makeApiCallForRecyclerView();
 
 
-        //initializeData();
 
-
-        specialRequestHistoryRVAdapter= new SpecialRequestHistoryRVAdapter(specialRequestHistoryRVModelArrayList, this);
-        recyclerView.setAdapter(specialRequestHistoryRVAdapter);
-        specialRequestHistoryRVAdapter.notifyDataSetChanged();
-        recyclerView.setVisibility(View.VISIBLE);
-        warning.setVisibility(View.GONE);
-
-        if(specialRequestHistoryRVModelArrayList.isEmpty()){
             recyclerView.setVisibility(View.GONE);
             warning.setVisibility(View.VISIBLE);
-        }
 
 
 
@@ -65,45 +76,45 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SpecialRequestHistoryActivity.this, SpecialRequest.class);
+                Intent intent = new Intent(SpecialRequestHistoryActivity.this, java.com.alumnimanagmentsystem.Activities.SpecialRequest.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void initializeData(){
+    public void  makeApiCallForRecyclerView(){
 
-        String[] title = new String[]{
-                "title",
-                "title",
-                "title",
-                "title",
-                "title",
-                "title",
-                "title",
-                "title",
-                "title",
-                "title"
-        };
+        Call<SpecialRequests> call = RetrofitClient.getUserService().getSpecialRequests(retrieveToken());
 
-        String[] description = new String[]{
-                "description",
-                "description",
-                "description",
-                "description",
-                "description",
-                "description",
-                "description",
-                "description",
-                "description",
-                "description",
-        };
+        call.enqueue(new Callback<SpecialRequests>() {
+            @Override
+            public void onResponse(Call<SpecialRequests> call, Response<SpecialRequests> response) {
+                SpecialRequests specialRequests = response.body();
+                specialRequestArrayList = new ArrayList<>(Arrays.asList(specialRequests.getSpecial_requests()));
+                putDataIntoRecyclerView(specialRequestArrayList);
+            }
+
+            @Override
+            public void onFailure(Call<SpecialRequests> call, Throwable t) {
+
+            }
+        });
 
 
-        for (int i = 0; i < title.length; i++){
-            SpecialRequestHistoryRVModel specialRequestHistoryRVModel= new SpecialRequestHistoryRVModel(title[i],description[i]);
-            specialRequestHistoryRVModelArrayList.add(specialRequestHistoryRVModel);
-        }
+    }
+
+    public String retrieveToken(){
+        SharedPreferences sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString(key, defaultValue);
+        return token;
+    }
+
+    private void putDataIntoRecyclerView(List<SpecialRequest> specialRequests){
+        specialRequestHistoryRVAdapter = new SpecialRequestHistoryRVAdapter((ArrayList<SpecialRequest>) specialRequests, this);
+       recyclerView.setAdapter(specialRequestHistoryRVAdapter);
+       specialRequestHistoryRVAdapter.notifyDataSetChanged();
+        warning.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
 }
