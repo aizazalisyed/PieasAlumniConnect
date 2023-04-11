@@ -14,12 +14,10 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
-import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.Model.SpecialRequests;
 import java.com.alumnimanagmentsystem.R;
 import java.com.alumnimanagmentsystem.RVAdapter.SpecialRequestHistoryRVAdapter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +74,7 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SpecialRequestHistoryActivity.this, java.com.alumnimanagmentsystem.Activities.SpecialRequest.class);
+                Intent intent = new Intent(SpecialRequestHistoryActivity.this, SendSpecialRequestActivity.class);
                 startActivity(intent);
             }
         });
@@ -92,6 +90,10 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
                 SpecialRequests specialRequests = response.body();
                 specialRequestArrayList = new ArrayList<>(Arrays.asList(specialRequests.getSpecial_requests()));
                 putDataIntoRecyclerView(specialRequestArrayList);
+                if(specialRequests.getSpecial_requests().length==0){
+                    warning.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -117,4 +119,14 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
         recyclerView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        switchToMainActivity();
+    }
+    private void switchToMainActivity(){
+
+        Intent switchActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(switchActivityIntent);
+    }
 }

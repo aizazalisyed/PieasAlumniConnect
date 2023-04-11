@@ -1,6 +1,7 @@
 package java.com.alumnimanagmentsystem.RVAdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.com.alumnimanagmentsystem.Activities.SpecialRequestDetailActivity;
 import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
@@ -35,6 +37,16 @@ public class SpecialRequestHistoryRVAdapter extends RecyclerView.Adapter<Special
         SpecialRequest specialRequest = specialRequestHistoryRVModels.get(position);
         holder.title.setText(specialRequest.getSubject());
         holder.description.setText(specialRequest.getDescription());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, SpecialRequestDetailActivity.class);
+                i.putExtra("title",specialRequest.getSubject() );
+                i.putExtra("description",specialRequest.getDescription());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

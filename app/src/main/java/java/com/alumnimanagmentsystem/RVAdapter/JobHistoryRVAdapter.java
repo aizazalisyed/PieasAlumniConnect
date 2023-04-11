@@ -2,6 +2,7 @@ package java.com.alumnimanagmentsystem.RVAdapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.com.alumnimanagmentsystem.Activities.SpecialRequestDetailActivity;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
