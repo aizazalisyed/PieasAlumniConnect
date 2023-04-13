@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.com.alumnimanagmentsystem.Activities.AlumniDetailActivity;
-import java.com.alumnimanagmentsystem.Model.AlumniModel;
+import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +24,11 @@ import java.util.Locale;
 
 public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHolder> implements Filterable {
 
-    List<AlumniModel> alumniModelArrayList;
-    List<AlumniModel> alumniModelArrayListFull;
+    List<Alumnus> alumniModelArrayList;
+    List<Alumnus> alumniModelArrayListFull;
     Context context;
 
-    public AlumniRVAdapter(List<AlumniModel> alumniModelArrayList, Context context) {
+    public AlumniRVAdapter(List<Alumnus> alumniModelArrayList, Context context) {
         this.alumniModelArrayList = alumniModelArrayList;
         this.context = context;
         alumniModelArrayListFull  = new ArrayList<>(alumniModelArrayList);
@@ -44,10 +44,12 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull AlumniRVAdapter.ViewHolder holder, int position) {
 
-        AlumniModel alumniModel = alumniModelArrayList.get(position);
-        holder.alumniProfileImageView.setImageResource(alumniModel.getImageID());
-        holder.alumniNameTextView.setText(alumniModel.getAlumniName());
-        holder.alumniDepartmentTextView.setText(alumniModel.getAlumniDepartment());
+        Alumnus alumniModel = alumniModelArrayList.get(position);
+
+        //todo: Image bitmap set karna ha
+        //holder.alumniProfileImageView.setImageResource(alumniModel.getImageID());
+        holder.alumniNameTextView.setText(alumniModel.getName());
+        holder.alumniDepartmentTextView.setText(alumniModel.getDegree().getDegree_name());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,15 +74,18 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<AlumniModel> filteredList = new ArrayList<>();
+            List<Alumnus> filteredList = new ArrayList<>();
             if(constraint == null || constraint.length() ==0 ){
                 filteredList.addAll(alumniModelArrayListFull);
             }
             else {
                 String filterPattern = constraint.toString().toLowerCase(Locale.ROOT).trim();
-                for (AlumniModel item: alumniModelArrayListFull
+
+                //todo: need to change alumni model with alumnus
+                for (Alumnus item: alumniModelArrayListFull
                      ) {
-                    if (item.getAlumniName().toLowerCase(Locale.ROOT).contains(filterPattern)){
+                    //todo: in the search filter need to add the department and other filters
+                    if (item.getName().toLowerCase(Locale.ROOT).contains(filterPattern)){
                         filteredList.add(item);
                     }
                     

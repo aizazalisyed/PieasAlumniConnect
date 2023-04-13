@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -14,64 +15,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import java.com.alumnimanagmentsystem.Model.AlumniModel;
+import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.RVAdapter.AlumniRVAdapter;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AlumniListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class AlumniListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
-    ArrayList<AlumniModel> alumniModelArrayList;
+    ArrayList<Alumnus> alumniModelArrayList;
     RecyclerView recyclerView;
     AlumniRVAdapter alumniRVAdapter;
     MainActivity mainActivity;
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AlumniListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AlumniFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AlumniListFragment newInstance(String param1, String param2) {
-        AlumniListFragment fragment = new AlumniListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    TextView warning;
+    Boolean isScrolling = false;
+    int currentItems, scrollOutItems, totalItems;
+    LinearLayoutManager manager;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -87,82 +56,47 @@ public class AlumniListFragment extends Fragment {
 
     }
 
-    private void hideToolBar(){
-
-        mainActivity.toolbar.setVisibility(View.GONE);
-    }
-    private void showToolBar(){
-        mainActivity.toolbar.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initializeData();
+
+        warning = view.findViewById(R.id.warning);
+        progressBar = view.findViewById(R.id.progressBar);
+        manager = new LinearLayoutManager(getContext());
+
         recyclerView = view.findViewById(R.id.alumniRecyclerView);
         alumniRVAdapter = new AlumniRVAdapter(alumniModelArrayList, getContext());
         recyclerView.setAdapter(alumniRVAdapter);
+        recyclerView.setLayoutManager(manager);
         alumniRVAdapter.notifyDataSetChanged();
 
-        final int[] state = new int[1];
 
-    }
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
 
-    private void initializeData(){
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                    isScrolling = true;
+                }
+            }
 
-        String name[] = new String[]{
-                "Syed Aizaz Ali",
-                "Ahmed Raza",
-                "Abdul Raafy",
-                "Ahsan Junaid",
-                "Syed Aizaz Ali",
-                "Ahmed Raza",
-                "Abdul Raafy",
-                "Ahsan Junaid","Syed Aizaz Ali",
-                "Ahmed Raza",
-                "Abdul Raafy",
-                "Ahsan Junaid"
-        };
-        String department[] = new String[]{
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences"
-                ,"Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
-                "Bs Computer and Information Sciences",
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+                currentItems = manager.getChildCount();
+                totalItems = manager.getItemCount();
+                scrollOutItems = manager.findFirstVisibleItemPosition();
 
-        };
+                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
+                    //data fatch;
+                }
+            }
+        });
 
-        int imageId[] = new int[]{
-                R.drawable.user_photo,
-                R.drawable.ahmedraza,
-                R.drawable.abdulrafy,
-                R.drawable.ahsanjunaid,
-                R.drawable.user_photo,
-                R.drawable.ahmedraza,
-                R.drawable.abdulrafy,
-                R.drawable.ahsanjunaid,
-                R.drawable.user_photo,
-                R.drawable.ahmedraza,
-                R.drawable.abdulrafy,
-                R.drawable.ahsanjunaid,
-
-        };
-
-        alumniModelArrayList = new ArrayList<>();
-
-        for (int i = 0; i < imageId.length; i++){
-            AlumniModel alumniModel = new AlumniModel(imageId[i], name[i], department[i] );
-            alumniModelArrayList.add(alumniModel);
-        }
 
     }
 
