@@ -5,6 +5,7 @@ import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.Model.SpecialRequests;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -18,6 +19,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserService {
 
@@ -58,4 +60,11 @@ public interface UserService {
 
     @POST("/special-requests")
     Call<SpecialRequest> postSpecialRequest(@Header("Authorization") String authToken, @Body SpecialRequest specialRequest);
+
+    @GET("/alumni")
+    Call<List<Alumnus>> getAllAlumni(@Query("limit") Integer limit,
+                                     @Query("offset") Integer offset,
+                                     @Header("Authorization") String authToken);
+
+
 }

@@ -53,8 +53,6 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
 
        makeApiCallForRecyclerView();
 
-
-
             recyclerView.setVisibility(View.GONE);
             warning.setVisibility(View.VISIBLE);
 

@@ -1,11 +1,15 @@
 package java.com.alumnimanagmentsystem.Activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,15 +23,28 @@ import android.widget.AbsListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.com.alumnimanagmentsystem.API.RetrofitClient;
+import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.RVAdapter.AchievementRVAdapter;
 import java.com.alumnimanagmentsystem.RVAdapter.AlumniRVAdapter;
 import java.com.alumnimanagmentsystem.R;
+import java.com.alumnimanagmentsystem.ViewModel.AlumniListViewModel;
+import java.com.alumnimanagmentsystem.ViewModel.AlumnusViewModel;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class AlumniListFragment extends Fragment {
 
-    ArrayList<Alumnus> alumniModelArrayList;
+    String fileName = "My_Pref";
+    String key = "TOKEN_STRING";
+    String defaultValue = "";
+    List<Alumnus> alumnusList;
     RecyclerView recyclerView;
     AlumniRVAdapter alumniRVAdapter;
     MainActivity mainActivity;
@@ -36,10 +53,13 @@ public class AlumniListFragment extends Fragment {
     int currentItems, scrollOutItems, totalItems;
     LinearLayoutManager manager;
     ProgressBar progressBar;
+    ProgressBar mainProgressbar;
+    AlumniListViewModel alumniListViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        alumniListViewModel = ViewModelProviders.of(requireActivity()).get(AlumniListViewModel.class);
 
     }
 
@@ -49,28 +69,35 @@ public class AlumniListFragment extends Fragment {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_alumni_list, container, false);
-
-        mainActivity = (MainActivity) getActivity();
-
         return view;
 
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         warning = view.findViewById(R.id.warning);
         progressBar = view.findViewById(R.id.progressBar);
+        mainProgressbar = view.findViewById(R.id.mainProgressbar);
         manager = new LinearLayoutManager(getContext());
 
         recyclerView = view.findViewById(R.id.alumniRecyclerView);
-        alumniRVAdapter = new AlumniRVAdapter(alumniModelArrayList, getContext());
-        recyclerView.setAdapter(alumniRVAdapter);
         recyclerView.setLayoutManager(manager);
-        alumniRVAdapter.notifyDataSetChanged();
+
+        mainProgressbar.setVisibility(View.VISIBLE);
+
+
+
+
+        alumniListViewModel.getAlumniList().observe(getActivity(), new Observer<List<Alumnus>>() {
+           @Override
+           public void onChanged(List<Alumnus> alumnusList) {
+
+               putDataIntoRecyclerView(alumnusList);
+               mainProgressbar.setVisibility(View.GONE);
+           }
+       });
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -92,7 +119,21 @@ public class AlumniListFragment extends Fragment {
                 scrollOutItems = manager.findFirstVisibleItemPosition();
 
                 if(isScrolling && (currentItems + scrollOutItems == totalItems)){
-                    //data fatch;
+
+                    alumniListViewModel.offset++;
+                    progressBar.setVisibility(View.VISIBLE);
+                   // todo: instead of calling alumniListViewModel.makeApiCall() create a functoin in viewModel which append the new item into the alumniList;
+
+                    alumniListViewModel.getAlumniList().observe(requireActivity(), new Observer<List<Alumnus>>() {
+                        @Override
+                        public void onChanged(List<Alumnus> alumnusList) {
+
+                            putDataIntoRecyclerView(alumnusList);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+
+
                 }
             }
         });
@@ -121,6 +162,15 @@ public class AlumniListFragment extends Fragment {
                 return false;
             }
         });
+
+    }
+
+
+    private void putDataIntoRecyclerView(List<Alumnus> alumnusList){
+
+        alumniRVAdapter = new AlumniRVAdapter(alumnusList, getContext());
+        recyclerView.setAdapter(alumniRVAdapter);
+        alumniRVAdapter.notifyDataSetChanged();
 
     }
 }

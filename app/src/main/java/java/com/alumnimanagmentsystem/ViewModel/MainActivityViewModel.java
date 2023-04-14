@@ -9,7 +9,7 @@ public class MainActivityViewModel extends ViewModel {
     public Boolean navigationItemClick;
 
     public MainActivityViewModel() {
-       navigationItemClick = Boolean.FALSE;
+        navigationItemClick = Boolean.FALSE;
 
     }
 }

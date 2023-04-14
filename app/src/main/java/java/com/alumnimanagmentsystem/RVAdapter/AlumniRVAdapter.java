@@ -31,7 +31,7 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
     public AlumniRVAdapter(List<Alumnus> alumniModelArrayList, Context context) {
         this.alumniModelArrayList = alumniModelArrayList;
         this.context = context;
-        alumniModelArrayListFull  = new ArrayList<>(alumniModelArrayList);
+        alumniModelArrayListFull  = alumniModelArrayList;
     }
 
     @NonNull
@@ -49,7 +49,7 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
         //todo: Image bitmap set karna ha
         //holder.alumniProfileImageView.setImageResource(alumniModel.getImageID());
         holder.alumniNameTextView.setText(alumniModel.getName());
-        holder.alumniDepartmentTextView.setText(alumniModel.getDegree().getDegree_name());
+        //holder.alumniDepartmentTextView.setText(alumniModel.getDegree().getDegree_name());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       // setting on click listener on the menu items in drawer
+        // setting on click listener on the menu items in drawer
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-       if(!mainActivityViewModel.navigationItemClick) {
-           getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
-       }
+        if(!mainActivityViewModel.navigationItemClick) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+        }
         Objects.requireNonNull(getSupportActionBar()).setTitle("Home");
         bottomNavigationView.setSelectedItemId(R.id.bottom_nav_home);
 
@@ -118,19 +118,19 @@ public class MainActivity extends AppCompatActivity {
             int id;
             id = item.getItemId();
 
-                if(id == R.id.bottom_nav_home){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
-                    Objects.requireNonNull(getSupportActionBar()).setTitle("Home");
-                }
-                else if(id == R.id.bottom_nav_search_alumni){
+            if(id == R.id.bottom_nav_home){
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+                Objects.requireNonNull(getSupportActionBar()).setTitle("Home");
+            }
+            else if(id == R.id.bottom_nav_search_alumni){
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new AlumniListFragment()).commit();
-                    Objects.requireNonNull(getSupportActionBar()).setTitle("Alumni");
-                }
-                else {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new DiscussionPanelFragment()).commit();
-                    Objects.requireNonNull(getSupportActionBar()).setTitle("Discussion Panel");
-                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new AlumniListFragment()).commit();
+                Objects.requireNonNull(getSupportActionBar()).setTitle("Alumni");
+            }
+            else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new DiscussionPanelFragment()).commit();
+                Objects.requireNonNull(getSupportActionBar()).setTitle("Discussion Panel");
+            }
             return true;
         });
 
