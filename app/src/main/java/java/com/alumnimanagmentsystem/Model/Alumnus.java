@@ -19,6 +19,11 @@ public class Alumnus {
     AlumniJobHistories[] alumni_job_histories;
     AlumniAchievements[] alumni_achievements;
     Degree degree;
+    ProfilePicture profilePicture;
+
+    public ProfilePicture getProfilePicture() {
+        return profilePicture;
+    }
 
     public Degree getDegree() {
         return degree;

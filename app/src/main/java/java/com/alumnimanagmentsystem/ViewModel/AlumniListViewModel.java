@@ -3,6 +3,9 @@ package java.com.alumnimanagmentsystem.ViewModel;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.Model.ProfilePicture;
 import java.util.List;
 
 import retrofit2.Call;

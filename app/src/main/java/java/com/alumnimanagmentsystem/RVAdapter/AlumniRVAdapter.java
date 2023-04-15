@@ -2,6 +2,9 @@ package java.com.alumnimanagmentsystem.RVAdapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.com.alumnimanagmentsystem.Activities.AlumniDetailActivity;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.Model.ProfilePicture;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +50,11 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
 
         Alumnus alumniModel = alumniModelArrayList.get(position);
 
-        //todo: Image bitmap set karna ha
-        //holder.alumniProfileImageView.setImageResource(alumniModel.getImageID());
+        Bitmap bitmap = convertToBitmap(alumniModel);
+
+        if(bitmap != null){
+            holder.alumniProfileImageView.setImageBitmap(bitmap);
+        }
         holder.alumniNameTextView.setText(alumniModel.getName());
         //holder.alumniDepartmentTextView.setText(alumniModel.getDegree().getDegree_name());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -106,10 +113,11 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
     };
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView alumniNameTextView, alumniDepartmentTextView;
         ImageView alumniProfileImageView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -119,5 +127,27 @@ public class AlumniRVAdapter extends RecyclerView.Adapter<AlumniRVAdapter.ViewHo
 
         }
     }
+        public Bitmap convertToBitmap(Alumnus alumnus){
 
+            ProfilePicture profilePicture = alumnus.getProfilePicture();
+
+            if(profilePicture != null){
+                int[] intArray = alumnus.getProfilePicture().getData();
+                byte[] byteArray = new byte[intArray.length];
+                for (int i = 0; i < intArray.length; i++) {
+                    byteArray[i] = (byte) intArray[i];
+                }
+
+                // Convert the byte stream to a Base64-encoded string
+                String base64String = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                // Decode the Base64-encoded string to a Bitmap
+                byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                return bitmap;
+            }
+            else return null;
+
+        }
 }
