@@ -19,4 +19,6 @@
     <color name="darker_gray">#5A5A5A</color>
     <color name="yellow">#FFFF00</color>
     <color name="off_white">#FAF9F6</color>
+    <color name="ColorOrange">#FFA500</color>
+    <color name="Pink">#FFC0CB</color>
 </resources>
