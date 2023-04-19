@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
             if(id == R.id.nav_request){
                 switchToSpecialRequestHistoryActivity();
             }
-            else if(id == R.id.nav_settings){
-                Toast.makeText(this, "click on settings", Toast.LENGTH_SHORT).show();
+            else if(id == R.id.nav_jobs){
+               switchToJobListActivity();
             }
             else {
                 switchToLoginActivity();
@@ -167,5 +167,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(switchActivityIntent);
     }
 
-
+    private void switchToJobListActivity(){
+        Intent switchActivityIntent = new Intent(this, JobListActivity.class);
+        startActivity(switchActivityIntent);
+    }
 }

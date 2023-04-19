@@ -7,7 +7,8 @@
     tools:context=".Activities.JobListActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBar"
+        android:theme="@style/MyThemeOverlay_Toolbar"
+        android:id="@+id/toolBarJobList"
         app:titleTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:listitem="@layout/jobs_recycler_view_iteam"
-        android:layout_below="@id/toolBar"/>
+        android:layout_below="@id/toolBarJobList"/>
 
     <TextView
         android:id="@+id/warning"
