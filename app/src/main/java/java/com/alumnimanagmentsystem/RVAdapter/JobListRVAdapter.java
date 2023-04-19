@@ -32,6 +32,12 @@ public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.View
         return new ViewHolder(view);
     }
 
+    public void addItems(List<JobModel> items) {
+        int startPosition = jobModelList.size();
+        jobModelList.addAll(items);
+        notifyItemRangeInserted(startPosition, items.size());
+    }
+
     @Override
     public void onBindViewHolder(@NonNull JobListRVAdapter.ViewHolder holder, int position) {
 

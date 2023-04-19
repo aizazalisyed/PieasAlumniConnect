@@ -5,8 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
     android:layout_marginTop="10dp"
-    android:layout_marginStart="6dp"
-    android:layout_marginEnd="6dp">
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:id="@+id/salaryLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:backgroundTint="@color/light_gray"
+           android:backgroundTint="@color/off_white"
             android:layout_below="@id/jobLocation"
             android:layout_marginTop="12dp"
             app:cardCornerRadius="5dp">
@@ -110,7 +110,7 @@
             android:id="@+id/jobTypeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/light_gray"
+            android:backgroundTint="@color/off_white"
             android:layout_below="@id/salaryLayout"
             android:layout_marginTop="5dp"
             app:cardCornerRadius="5dp">

@@ -7,51 +7,57 @@
     tools:context=".Activities.JobListActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:theme="@style/MyThemeOverlay_Toolbar"
         android:id="@+id/toolBarJobList"
-        app:titleTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/gradiant_blue"
-        tools:ignore="MissingConstraints"
-        app:title="Recent Jobs"/>
+        android:theme="@style/MyThemeOverlay_Toolbar"
+        app:title="Recent Jobs"
+        app:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/JobsRecyclerView"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:listitem="@layout/jobs_recycler_view_iteam"
-        android:layout_below="@id/toolBarJobList"/>
+        android:layout_below="@id/toolBarJobList">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/JobsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:listitem="@layout/jobs_recycler_view_iteam" />
+
+    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="No Alumni List To Display"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/mainProgressbar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="60dp"
-        android:layout_centerVertical="true"/>
+        android:visibility="gone" />
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar"
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"/>
+        android:layout_marginBottom="60dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

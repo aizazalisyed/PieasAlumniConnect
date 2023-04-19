@@ -30,8 +30,6 @@ public class AlumniListViewModel extends AndroidViewModel {
     MutableLiveData<List<Alumnus>> alumnusList = new MutableLiveData<>();
     public int offset = 0;
     int limit = 15;
-    public Boolean progressBarIsHidden = false;
-
 
     public AlumniListViewModel(@NonNull Application application) {
         super(application);
