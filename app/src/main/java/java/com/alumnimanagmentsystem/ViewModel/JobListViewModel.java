@@ -54,17 +54,18 @@ public class JobListViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    if (response.body().size() == 0) {
+
+                    List<JobModel> items;
+                    items = response.body();
+                    if (items.size() < limit) {
                         hasMoreData = false;
-                    } else {
-                        List<JobModel> currentList = jobModelList.getValue();
-                        if (currentList == null) {
-                            currentList = new ArrayList<>();
-                        }
-                        currentList.addAll(response.body());
-                        jobModelList.setValue(currentList);
-                        offset += limit;
                     }
+                    List<JobModel> currentList = jobModelList.getValue();
+                    if (currentList == null) {
+                        currentList = new ArrayList<>();
+                    }
+                    currentList.addAll(items);
+                    jobModelList.setValue(currentList);
                 } else {
                     // Handle error
                 }

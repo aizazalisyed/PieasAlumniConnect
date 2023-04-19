@@ -13,6 +13,7 @@ import org.w3c.dom.Text;
 
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.R;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder> {
@@ -34,7 +35,9 @@ public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.View
 
     public void addItems(List<JobModel> items) {
         int startPosition = jobModelList.size();
+        jobModelList = new ArrayList<>();
         jobModelList.addAll(items);
+
         notifyItemRangeInserted(startPosition, items.size());
     }
 
