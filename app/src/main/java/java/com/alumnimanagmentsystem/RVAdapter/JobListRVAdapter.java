@@ -1,6 +1,7 @@
 package java.com.alumnimanagmentsystem.RVAdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import org.w3c.dom.Text;
 
+import java.com.alumnimanagmentsystem.Activities.JobDetailActivity;
+import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
@@ -54,6 +59,27 @@ public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.View
         holder.createdOnTextView.setText(jobModel.getCreated_on());
         holder.lastDateToApplyTextView.setText(jobModel.getLast_date_to_apply());
 
+        holder.itemView.setOnClickListener(v -> {
+
+            Intent intent = new Intent(context, JobDetailActivity.class);
+            intent.putExtra("job_title", jobModel.getJob_title());
+            intent.putExtra("company_name", jobModel.getCompany_name());
+            intent.putExtra("location", jobModel.getLocation());
+            intent.putExtra("salary", jobModel.getSalary());
+            intent.putExtra("employment_type", jobModel.getEmployment_type());
+            intent.putExtra("created_on", jobModel.getCreated_on());
+            intent.putExtra("last_date_to_apply", jobModel.getLast_date_to_apply());
+            intent.putExtra("experience", jobModel.getExperience());
+            intent.putExtra("gender", jobModel.getGender());
+            intent.putExtra("description", jobModel.getDescription());
+            intent.putExtra("required_gpa", jobModel.getRequired_gpa());
+
+            String eligibility_disciplines = stringBuilder(jobModel.getEligibility_disciplines());
+            intent.putExtra("eligibility_disciplines", eligibility_disciplines);
+            context.startActivity(intent);
+            Animatoo.INSTANCE.animateFade(context);
+        });
+
     }
 
     @Override
@@ -82,5 +108,15 @@ public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.View
             lastDateToApplyTextView = itemView.findViewById(R.id.lastDateToApplyTextView);
 
         }
+    }
+
+    private String stringBuilder(EligibilityDiscipline[] eligibilityDisciplines){
+
+        String string = "";
+
+        for (int i = 0; i < eligibilityDisciplines.length; i++){
+            string += eligibilityDisciplines[i].getName()+"\n";
+        }
+        return string;
     }
 }

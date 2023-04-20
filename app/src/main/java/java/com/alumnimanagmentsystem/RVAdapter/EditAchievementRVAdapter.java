@@ -108,7 +108,7 @@ public class EditAchievementRVAdapter extends RecyclerView.Adapter<EditAchieveme
 
     private void deleteAlert(int id){
         new AlertDialog.Builder(context)
-                .setTitle("Report Post")
+                .setTitle("Delete")
                 .setMessage("Are you sure you want to delete this?")
 
                 // Specifying a listener allows you to take an action before dismissing the dialog.
