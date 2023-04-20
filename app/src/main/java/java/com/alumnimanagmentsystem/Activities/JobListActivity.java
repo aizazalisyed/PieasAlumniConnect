@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
@@ -37,7 +38,6 @@ public class JobListActivity extends AppCompatActivity {
     JobListViewModel jobListViewModel;
     int currentItems, scrollOutItems, totalItems;
     Boolean isScrolling = false;
-    NestedScrollView nestedScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +51,12 @@ public class JobListActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.JobsRecyclerView);
         jobListViewModel = ViewModelProviders.of(this).get(JobListViewModel.class);
-        nestedScrollView = findViewById(R.id.nestedScrollView);
+        progressBar.setVisibility(View.GONE);
 
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
+
+
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -82,6 +84,8 @@ public class JobListActivity extends AppCompatActivity {
 
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     isScrolling = true;
+
+                    Log.i(" isScrolling","True");
                 }
             }
 
@@ -89,22 +93,26 @@ public class JobListActivity extends AppCompatActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                Log.i(" onScrolled","calling from inside");
+
                 currentItems = manager.getChildCount();
                 totalItems = manager.getItemCount();
                 scrollOutItems = manager.findFirstVisibleItemPosition();
 
                 if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
+
+                    Log.i("reached end", "reached end");
                     isScrolling = false;
                     jobListViewModel.offset += jobListViewModel.limit;
                     jobListViewModel.makeApiCall();
                 }
             }
         });
-
-        jobListViewModel.makeApiCall();
     }
 
     private void putDataIntoRecyclerView(List<JobModel> jobModelList){
+
+        Log.i("putDataIntoRecyclerView", "putDataIntoRecyclerView");
         jobListRVAdapter = new JobListRVAdapter(this, jobModelList);
         recyclerView.setAdapter(jobListRVAdapter);
     }

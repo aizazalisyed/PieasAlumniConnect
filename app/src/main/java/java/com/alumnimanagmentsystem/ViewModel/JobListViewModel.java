@@ -28,8 +28,9 @@ public class JobListViewModel extends AndroidViewModel {
     String defaultValue = "";
     MutableLiveData<List<JobModel>> jobModelList = new MutableLiveData<>();
     public int offset = 0;
-    public int limit = 4;
+    public int limit = 5;
     private boolean hasMoreData = true;
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 
     public JobListViewModel(@NonNull Application application) {
         super(application);
@@ -45,6 +46,8 @@ public class JobListViewModel extends AndroidViewModel {
     }
     public void makeApiCall(){
 
+        isLoading.setValue(true);
+
         if (!hasMoreData) {
             return;
         }
@@ -53,8 +56,9 @@ public class JobListViewModel extends AndroidViewModel {
         call.enqueue(new Callback<List<JobModel>>() {
             @Override
             public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
-                if (response.isSuccessful() && response.body() != null) {
 
+                isLoading.setValue(false);
+                if (response.isSuccessful() && response.body() != null) {
                     List<JobModel> items;
                     items = response.body();
                     if (items.size() < limit) {
@@ -69,6 +73,7 @@ public class JobListViewModel extends AndroidViewModel {
                 } else {
                     // Handle error
                 }
+
             }
 
             @Override
@@ -79,6 +84,9 @@ public class JobListViewModel extends AndroidViewModel {
     }
     public LiveData<List<JobModel>> getJobList(){
         return jobModelList;
+    }
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
     }
 
 }

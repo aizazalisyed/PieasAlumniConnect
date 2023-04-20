@@ -16,20 +16,13 @@
         app:titleTextColor="@color/white"
         tools:ignore="MissingConstraints" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolBarJobList">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/JobsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_below="@id/toolBarJobList"
             tools:listitem="@layout/jobs_recycler_view_iteam" />
-
-    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/warning"
@@ -54,10 +47,9 @@
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>
