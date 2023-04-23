@@ -77,7 +77,6 @@ public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.View
             String eligibility_disciplines = stringBuilder(jobModel.getEligibility_disciplines());
             intent.putExtra("eligibility_disciplines", eligibility_disciplines);
             context.startActivity(intent);
-            Animatoo.INSTANCE.animateFade(context);
         });
 
     }

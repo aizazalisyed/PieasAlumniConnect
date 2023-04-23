@@ -19,6 +19,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.CreateJob"
+            android:exported="false"
+            android:parentActivityName=".Activities.JobListActivity"
+            >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activities.JobDetailActivity"
             android:exported="false"
             android:parentActivityName=".Activities.JobListActivity">

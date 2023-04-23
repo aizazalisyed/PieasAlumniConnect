@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.CreateJob">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradiant_blue"
+        android:theme="@style/MyThemeOverlay_Toolbar"
+        app:title="Create Job Post"
+        app:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+    <TextView
+        android:id="@+id/jobTitleHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Job Title*"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/AchievementTitleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/jobTitleHeading"
+        android:layout_marginTop="1dp"
+        android:hint="Ex: Software Engineer."
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/jobLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/AchievementTitleEditText"
+        android:layout_marginTop="20dp"
+        android:text="Location"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/jobLocationEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/jobLocation"
+        android:layout_marginTop="1dp"
+        android:hint="City name Ex: Islamabad."
+        android:textSize="16sp"
+        />
+
+
+        <TextView
+            android:id="@+id/jobSector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobLocationEditText"
+            android:layout_marginTop="20dp"
+            android:text="Sector"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/jobSectorEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobSector"
+            android:layout_marginTop="1dp"
+            android:hint="Ex: Private or Public."
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/jobCompanyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobSectorEditText"
+            android:layout_marginTop="20dp"
+            android:text="Company Name"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/jobCompanyNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobCompanyName"
+            android:layout_marginTop="1dp"
+            android:hint="Ex: Netsol Tech."
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/jobSalary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobCompanyNameEditText"
+            android:layout_marginTop="20dp"
+            android:text="Salary (in Rupees)"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/jobSalaryEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobSalary"
+            android:layout_marginTop="1dp"
+            android:hint="Ex: 10,000 - 20,000"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/jobGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobSalaryEditText"
+            android:layout_marginTop="20dp"
+            android:text="Gender"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/jobGender"
+            />
+
+        <TextView
+            android:id="@+id/jobExperience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerGender"
+            android:layout_marginTop="20dp"
+            android:text="Experience"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/spinnerExperience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/jobExperience"
+            />
+
+        <TextView
+            android:id="@+id/jobEmploymentType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerExperience"
+            android:layout_marginTop="20dp"
+            android:text="Employment Type"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/spinnerEmploymentType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/jobEmploymentType"
+            />
+        <TextView
+            android:id="@+id/jobRequiredGpa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerEmploymentType"
+            android:layout_marginTop="20dp"
+            android:text="Required Gpa"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/spinnerRequiredGpa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/jobRequiredGpa"
+            />
+
+        <TextView
+            android:id="@+id/jobCreatedOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerRequiredGpa"
+            android:layout_marginTop="20dp"
+            android:text="Publication Date"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/jobCreatedOnEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobCreatedOn"
+            android:layout_marginTop="1dp"
+            android:hint="Publication Date"
+            android:textSize="16sp"
+            android:focusable="false"
+            />
+
+        <TextView
+            android:id="@+id/jobLastDateToApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobCreatedOnEditText"
+            android:layout_marginTop="20dp"
+            android:text="Last Date To Apply"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/jobLastDateToApplyEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobLastDateToApply"
+            android:layout_marginTop="1dp"
+            android:hint="Last Date To Apply"
+            android:textSize="16sp"
+            android:focusable="false"
+            />
+
+        <TextView
+            android:id="@+id/jobDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jobLastDateToApplyEditText"
+            android:layout_marginTop="20dp"
+            android:text="Job Description"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/jobDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@id/jobDescription"
+            android:layout_marginTop="1dp"
+            android:textSize="16sp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:hint="Write here..."
+            android:paddingStart="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"
+            android:background="@drawable/border"
+            />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:layout_below="@id/jobDescriptionEditText"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"/>
+    </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

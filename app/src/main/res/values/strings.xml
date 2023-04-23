@@ -44,4 +44,39 @@
     <string name="image_view_item_transform_content_description">Represents an image view in the
         item
     </string>
+
+
+    <string-array name="genderOptions">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Both</item>
+        <item>Prefer Not To Say</item>
+    </string-array>
+
+    <string-array name="experienceOptions">
+        <item>Select Experience</item>
+        <item>Fresh</item>
+        <item>1–2 years</item>
+        <item>3–4 years</item>
+        <item>5–6 years</item>
+        <item>More than 8 years</item>
+    </string-array>
+
+    <string-array name="employmentTypeOptions">
+        <item>Select Employment Type</item>
+        <item>Full Time(Contractual)</item>
+        <item>Full Time(Permanent)</item>
+        <item>Part Time</item>
+    </string-array>
+
+    <string-array name="requiredGpaOptions">
+        <item>Select Required Gpa</item>
+        <item>Not Required</item>
+        <item>2.5 and above</item>
+        <item>3.0 and above</item>
+        <item>3.5 and above</item>
+    </string-array>
+
+
 </resources>

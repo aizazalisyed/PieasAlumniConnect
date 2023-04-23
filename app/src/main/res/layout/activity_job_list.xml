@@ -35,6 +35,21 @@
         android:textSize="18sp"
         android:visibility="gone" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/gradient_start_color"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        />
+
     <ProgressBar
         android:id="@+id/mainProgressbar"
         android:layout_width="80dp"

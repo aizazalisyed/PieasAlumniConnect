@@ -63,9 +63,6 @@ public class InsertExperienceActivity extends AppCompatActivity {
         checked = false;
         Context context = this;
 
-        Calendar calendar = Calendar.getInstance();
-
-
         DatePickerDialog.OnDateSetListener enddate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {

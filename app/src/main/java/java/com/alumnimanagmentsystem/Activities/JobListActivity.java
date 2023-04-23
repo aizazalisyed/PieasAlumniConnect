@@ -17,6 +17,8 @@ import android.widget.AbsListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.R;
@@ -38,6 +40,7 @@ public class JobListActivity extends AppCompatActivity {
     JobListViewModel jobListViewModel;
     int currentItems, scrollOutItems, totalItems;
     Boolean isScrolling = false;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +54,13 @@ public class JobListActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.JobsRecyclerView);
         jobListViewModel = ViewModelProviders.of(this).get(JobListViewModel.class);
+        fab = findViewById(R.id.fab);
+
+
         progressBar.setVisibility(View.GONE);
 
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
-
 
 
         setSupportActionBar(toolbar);
@@ -108,6 +113,22 @@ public class JobListActivity extends AppCompatActivity {
                 }
             }
         });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
+
+        fab.setOnClickListener(v -> {
+            SwitchToCreateJobActivity();
+        });
     }
 
     private void putDataIntoRecyclerView(List<JobModel> jobModelList){
@@ -115,5 +136,10 @@ public class JobListActivity extends AppCompatActivity {
         Log.i("putDataIntoRecyclerView", "putDataIntoRecyclerView");
         jobListRVAdapter = new JobListRVAdapter(this, jobModelList);
         recyclerView.setAdapter(jobListRVAdapter);
+    }
+
+    private void SwitchToCreateJobActivity(){
+    Intent intent = new Intent(this, CreateJob.class);
+    startActivity(intent);
     }
 }
