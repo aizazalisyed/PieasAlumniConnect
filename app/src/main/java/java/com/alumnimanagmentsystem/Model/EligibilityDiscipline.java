@@ -6,6 +6,10 @@ public class EligibilityDiscipline {
     public String name;
     public JobEligibility job_eligibility;
 
+    public EligibilityDiscipline(int discipline_id) {
+        this.discipline_id = discipline_id;
+    }
+
     public JobEligibility getJob_eligibility() {
         return job_eligibility;
     }

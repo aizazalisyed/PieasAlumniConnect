@@ -38,7 +38,7 @@
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/AchievementTitleEditText"
+        android:id="@+id/jobTitleEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/jobTitleHeading"
@@ -50,9 +50,9 @@
         android:id="@+id/jobLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/AchievementTitleEditText"
+        android:layout_below="@id/jobTitleEditText"
         android:layout_marginTop="20dp"
-        android:text="Location"
+        android:text="Location*"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/jobLocationEditText"
             android:layout_marginTop="20dp"
-            android:text="Sector"
+            android:text="Sector*"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/jobSectorEditText"
             android:layout_marginTop="20dp"
-            android:text="Company Name"
+            android:text="Company Name*"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -131,10 +131,33 @@
             />
 
         <TextView
-            android:id="@+id/jobGender"
+            android:id="@+id/jobEligibilityDisciplines"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/jobSalaryEditText"
+            android:layout_marginTop="20dp"
+            android:text="Eligibility Disciplines*"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/spinnerEligibilityDisciplines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/jobEligibilityDisciplines"
+            android:spinnerMode="dialog"
+            android:focusable="false"
+            android:hint="Select Eligibility Disciplines"
+            />
+
+        <TextView
+            android:id="@+id/jobGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerEligibilityDisciplines"
             android:layout_marginTop="20dp"
             android:text="Gender"
             android:textColor="@color/black"
@@ -156,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/spinnerGender"
             android:layout_marginTop="20dp"
-            android:text="Experience"
+            android:text="Experience*"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -176,7 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/spinnerExperience"
             android:layout_marginTop="20dp"
-            android:text="Employment Type"
+            android:text="Employment Type*"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -210,34 +233,12 @@
             />
 
         <TextView
-            android:id="@+id/jobCreatedOn"
+            android:id="@+id/jobLastDateToApply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/spinnerRequiredGpa"
             android:layout_marginTop="20dp"
-            android:text="Publication Date"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/jobCreatedOnEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/jobCreatedOn"
-            android:layout_marginTop="1dp"
-            android:hint="Publication Date"
-            android:textSize="16sp"
-            android:focusable="false"
-            />
-
-        <TextView
-            android:id="@+id/jobLastDateToApply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/jobCreatedOnEditText"
-            android:layout_marginTop="20dp"
-            android:text="Last Date To Apply"
+            android:text="Last Date To Apply*"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />

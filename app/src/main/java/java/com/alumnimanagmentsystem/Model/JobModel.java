@@ -19,6 +19,21 @@ public class JobModel {
     public Object alumni;
     public EligibilityDiscipline[] eligibility_disciplines;
 
+    public JobModel(String job_title, String last_date_to_apply, String sector, String location, String company_name, String gender, String experience, String employment_type, String description, String salary, String required_gpa, EligibilityDiscipline[] eligibility_disciplines) {
+        this.job_title = job_title;
+        this.last_date_to_apply = last_date_to_apply;
+        this.sector = sector;
+        this.location = location;
+        this.company_name = company_name;
+        this.gender = gender;
+        this.experience = experience;
+        this.employment_type = employment_type;
+        this.description = description;
+        this.salary = salary;
+        this.required_gpa = required_gpa;
+        this.eligibility_disciplines = eligibility_disciplines;
+    }
+
     public int getJob_post_id() {
         return job_post_id;
     }

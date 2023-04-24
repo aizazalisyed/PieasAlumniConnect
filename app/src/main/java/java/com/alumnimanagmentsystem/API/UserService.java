@@ -3,7 +3,9 @@ package java.com.alumnimanagmentsystem.API;
 import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
 import java.com.alumnimanagmentsystem.Model.JobModel;
+import java.com.alumnimanagmentsystem.Model.PostJobModel;
 import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.Model.SpecialRequests;
 import java.util.List;
@@ -70,5 +72,9 @@ public interface UserService {
     @GET("/jobs")
     Call<List<JobModel>> getAllJobs(@Header("Authorization") String authToken, @Query("limit") Integer limit,
                                     @Query("offset") Integer offset);
+    @GET("/job-eligibility")
+    Call<List<EligibilityDiscipline>> getEligibilityDisciplines(@Header("Authorization") String authToken);
 
+    @POST("/jobs")
+    Call<PostJobModel> createJobPost(@Header("Authorization") String authToken, @Body PostJobModel jobModel);
 }
