@@ -103,9 +103,10 @@ public class CreateJob extends AppCompatActivity {
                                         mUserItems.add(position);
                                         selectedDisciplineIds.add(eligibilityDisciplines.get(position).getDiscipline_id());
                                     }
+
                                 }
                                 else {
-                                    mUserItems.remove(position);
+                                    mUserItems.remove(mUserItems.indexOf(position));
                                     selectedDisciplineIds.remove((Integer) eligibilityDisciplines.get(position).getDiscipline_id());
                                 }
                             }

@@ -120,16 +120,6 @@
             android:hint="End date"
             android:textSize="16sp"
             android:focusable="false"/>
-        <EditText
-            android:id="@+id/endDatePresentEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/endDateHeading"
-            android:layout_marginTop="1dp"
-            android:hint="End date"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            android:focusable="false"/>
 
         <TextView
             android:id="@+id/jobDescriptionHeading"

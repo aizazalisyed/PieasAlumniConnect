@@ -1,6 +1,7 @@
 package java.com.alumnimanagmentsystem.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
@@ -141,5 +142,13 @@ public class JobListActivity extends AppCompatActivity {
     private void SwitchToCreateJobActivity(){
     Intent intent = new Intent(this, CreateJob.class);
     startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

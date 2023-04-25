@@ -2,12 +2,15 @@ package java.com.alumnimanagmentsystem.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +19,9 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.R;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +32,8 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
     String defaultValue = "";
-
+    CheckBox checkBox;
+    final Calendar myCalendar = Calendar.getInstance();
     String jobTitleString, jobDescriptionString,
             companyNameString,
             fromDateString,
@@ -40,6 +47,7 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
             fromDate,
             toDate;
     Button saveButton;
+    Boolean checked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +60,10 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
         fromDate = findViewById(R.id.startDateEditText);
         toDate = findViewById(R.id.endDateEditText);
         saveButton = findViewById(R.id.saveButton);
+        checkBox = findViewById(R.id.checkbox);
 
-
+        checked = false;
+        Context context = this;
         Bundle extras = getIntent().getExtras();
 
         jobTitleString = extras.getString("jobTitle");
@@ -69,6 +79,55 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
         companyName.setText(companyNameString);
         fromDate.setText(fromDateString);
         toDate.setText(toDateString);
+
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!checked) {
+                    toDate.setText("Present");
+                    checked = true;
+                } else {
+
+                   toDate.setText("");
+                    checked = false;
+                }
+            }
+        });
+
+        DatePickerDialog.OnDateSetListener enddate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                updateLabelEndDate();
+            }
+        };
+
+        DatePickerDialog.OnDateSetListener startdate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                updateLabelStartDate();
+            }
+        };
+
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(EditJobHistoryFieldActivity.this, startdate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(EditJobHistoryFieldActivity.this, enddate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +148,19 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
 
     public void MakeApiCall() {
 
+        String jobTitleString = jobTitle.getText().toString();
+        String startDateString = fromDate.getText().toString();
+        String endDateString = toDate.getText().toString();
+        String companyNameString = companyName.getText().toString();
+        String jobDescriptionString = jobDescription.getText().toString();
 
-        AlumniJobHistories alumniJobHistories = new AlumniJobHistories(jobTitle.getText().toString(),
-                fromDate.getText().toString(), toDate.getText().toString(), companyName.getText().toString(), jobDescription.getText().toString());
+        AlumniJobHistories alumniJobHistories;
+        if(endDateString.equals("Present")){
+            alumniJobHistories  = new AlumniJobHistories(jobTitleString, startDateString, null, companyNameString, jobDescriptionString);
+        }
+        else {
+            alumniJobHistories  = new AlumniJobHistories(jobTitleString, startDateString, endDateString, companyNameString, jobDescriptionString);
+        }
 
         Call<AlumniJobHistories> call = RetrofitClient.getUserService().patchJobHistories(retrieveToken(), alumniJobHistories, jobHistoryID);
         call.enqueue(new Callback<AlumniJobHistories>() {
@@ -129,5 +198,17 @@ public class EditJobHistoryFieldActivity extends AppCompatActivity {
     private void SwitchToUserProfileActivity(){
         Intent switchActivityIntent = new Intent(EditJobHistoryFieldActivity.this, UserProfileActivity.class);
         startActivity(switchActivityIntent);
+    }
+
+    private void updateLabelStartDate() {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        fromDate.setText(dateFormat.format(myCalendar.getTime()));
+    }
+
+    private void updateLabelEndDate() {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        toDate.setText(dateFormat.format(myCalendar.getTime()));
     }
 }

@@ -33,7 +33,6 @@ public class InsertExperienceActivity extends AppCompatActivity {
     EditText endDate;
     final Calendar myCalendar = Calendar.getInstance();
     CheckBox checkBox;
-    EditText presentWorking;
     Boolean checked;
     Button saveButton;
     EditText jobTitle;
@@ -53,7 +52,6 @@ public class InsertExperienceActivity extends AppCompatActivity {
         startDate = findViewById(R.id.startDateEditText);
         endDate = findViewById(R.id.endDateEditText);
         checkBox = findViewById(R.id.checkbox);
-        presentWorking = findViewById(R.id.endDatePresentEditText);
         saveButton = findViewById(R.id.saveButton);
         jobTitle = findViewById(R.id.jobTitleEditText);
         companyName = findViewById(R.id.companyTitleEditText);
@@ -153,8 +151,13 @@ public class InsertExperienceActivity extends AppCompatActivity {
         String companyNameString = companyName.getText().toString();
         String jobDescriptionString = jobDescriptionEditText.getText().toString();
 
-        AlumniJobHistories alumniJobHistories = new AlumniJobHistories(jobTitleString, startDateString, endDateString, companyNameString, jobDescriptionString);
-
+        AlumniJobHistories alumniJobHistories;
+        if(endDateString.equals("Present")){
+            alumniJobHistories  = new AlumniJobHistories(jobTitleString, startDateString, null, companyNameString, jobDescriptionString);
+        }
+        else {
+            alumniJobHistories  = new AlumniJobHistories(jobTitleString, startDateString, endDateString, companyNameString, jobDescriptionString);
+        }
         Call<AlumniJobHistories> call = RetrofitClient.getUserService().postJobHistroy(retrieveToken(),alumniJobHistories);
         call.enqueue(new Callback<AlumniJobHistories>() {
             @Override

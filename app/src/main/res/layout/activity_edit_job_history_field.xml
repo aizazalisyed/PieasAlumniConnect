@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Add Job Experience"
+            android:text="Edit Job Experience"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -60,12 +60,32 @@
             android:hint="Ex: Devsinc (Islamabad)"
             android:textSize="16sp" />
 
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/companyTitleEditText"
+            android:layout_alignParentLeft="true"
+
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/checkboxText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/companyTitleEditText"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="27dp"
+            android:text="I am Currently Employed"
+            android:textColor="@color/darker_gray" />
+
 
         <TextView
             android:id="@+id/startDateHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/companyTitleEditText"
+            android:layout_below="@id/checkbox"
             android:layout_marginTop="30dp"
             android:text="Start date*"
             android:textColor="@color/black"
@@ -99,16 +119,6 @@
             android:layout_marginTop="1dp"
             android:hint="End date"
             android:textSize="16sp"
-            android:focusable="false"/>
-        <EditText
-            android:id="@+id/endDatePresentEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/endDateHeading"
-            android:layout_marginTop="1dp"
-            android:hint="End date"
-            android:textSize="16sp"
-            android:visibility="invisible"
             android:focusable="false"/>
 
         <TextView

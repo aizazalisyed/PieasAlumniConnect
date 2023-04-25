@@ -63,7 +63,7 @@ public class EditJobHistoryRVAdapter extends RecyclerView.Adapter<EditJobHistory
         holder.companyName.setText(jobHistoryModel.getCompany_name());
         holder.fromDate.setText(jobHistoryModel.getJob_start_date());
 
-        if(jobHistoryModel.getJob_end_date().equals("0000-00-00")){
+        if(jobHistoryModel.getJob_end_date() == null){
             holder.toDate.setText("Present");
         } else  holder.toDate.setText(jobHistoryModel.getJob_end_date());
 

@@ -279,6 +279,9 @@
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
             android:paddingEnd="20dp"
+            android:overScrollMode="always"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
             android:background="@drawable/border"
             />
 

@@ -42,11 +42,10 @@ public class JobHistoryRVAdapter extends RecyclerView.Adapter<JobHistoryRVAdapte
         holder.companyName.setText(jobHistoryModel.getCompany_name());
         holder.fromDate.setText(jobHistoryModel.getJob_start_date());
 
-        if(jobHistoryModel.getJob_end_date().equals("0000-00-00")){
+        if(jobHistoryModel.getJob_end_date() == null){
             holder.toDate.setText("Present");
         }
         else holder.toDate.setText(jobHistoryModel.getJob_end_date());
-
 
         if( holder.jobDescription.getText().toString().isEmpty()){
             holder.jobDescription.setVisibility(View.GONE);
