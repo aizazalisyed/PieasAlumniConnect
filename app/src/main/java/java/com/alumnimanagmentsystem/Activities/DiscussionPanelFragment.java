@@ -6,19 +6,30 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.com.alumnimanagmentsystem.Model.DiscussionPanelModel;
+import java.com.alumnimanagmentsystem.Model.JobModel;
+import java.com.alumnimanagmentsystem.Model.PostsModel;
 import java.com.alumnimanagmentsystem.RVAdapter.DiscussionPanelRVAdapter;
 import java.com.alumnimanagmentsystem.R;
+import java.com.alumnimanagmentsystem.RVAdapter.JobListRVAdapter;
+import java.com.alumnimanagmentsystem.ViewModel.DiscussionPanelViewModel;
+import java.com.alumnimanagmentsystem.ViewModel.JobListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +40,11 @@ public class DiscussionPanelFragment extends Fragment {
     DiscussionPanelRVAdapter discussionPanelRVAdapter;
     List<SlideModel> slideModelList;
     FloatingActionButton fab;
-
-
+    DiscussionPanelViewModel discussionPanelViewModel;
+    ProgressBar progressBar;
+    LinearLayoutManager manager;
+    int currentItems, scrollOutItems, totalItems;
+    Boolean isScrolling = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,14 +63,39 @@ public class DiscussionPanelFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fab = view.findViewById(R.id.fab);
-        initializeData();
-
         recyclerView = view.findViewById(R.id.discussionPanelRecyclerView);
-        discussionPanelRVAdapter = new DiscussionPanelRVAdapter(discussionPanelModelArrayList, getContext());
-        recyclerView.setAdapter(discussionPanelRVAdapter);
-        discussionPanelRVAdapter.notifyDataSetChanged();
+        discussionPanelViewModel = ViewModelProviders.of(getActivity()).get(DiscussionPanelViewModel.class);
+        progressBar = view.findViewById(R.id.progressBar);
+        manager = new LinearLayoutManager(getContext());
+
+
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(true);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        discussionPanelViewModel.getPosts().observe(getActivity(), new Observer<List<PostsModel>>() {
+            @Override
+            public void onChanged(List<PostsModel> postsModels) {
+                if (discussionPanelRVAdapter == null) {
+                    putDataIntoRecyclerView((ArrayList<PostsModel>) postsModels);
+                } else {
+                    discussionPanelRVAdapter.addItems((ArrayList<PostsModel>) postsModels);
+                }
+               progressBar.setVisibility(View.GONE);
+            }
+        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true;
+                }
+            }
+
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -64,6 +103,18 @@ public class DiscussionPanelFragment extends Fragment {
                     fab.hide();
                 } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
                     fab.show();
+                }
+
+                currentItems = manager.getChildCount();
+                totalItems = manager.getItemCount();
+                scrollOutItems = manager.findFirstVisibleItemPosition();
+
+                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
+
+                    Log.i("reached end", "reached end");
+                    isScrolling = false;
+                    discussionPanelViewModel.offset += discussionPanelViewModel.limit;
+                  discussionPanelViewModel.makeApiCall();
                 }
             }
         });
@@ -76,64 +127,10 @@ public class DiscussionPanelFragment extends Fragment {
         });
     }
 
-    private void initializeData(){
+    private void putDataIntoRecyclerView(ArrayList<PostsModel> postsModelList){
 
-        slideModelList = new ArrayList<SlideModel>();
-        slideModelList.add( new SlideModel(R.drawable.a, ScaleTypes.CENTER_CROP));
-        slideModelList.add(new SlideModel(R.drawable.b, ScaleTypes.CENTER_CROP));
-        slideModelList.add(new SlideModel(R.drawable.c, ScaleTypes.CENTER_CROP));
-        slideModelList.add(new SlideModel(R.drawable.d, ScaleTypes.CENTER_CROP));
-
-        String name[] = new String[]{
-                "Ahmed Raza",
-                "Abdul Rafy",
-                "Syed Aizaz Ali",
-                "Ahsand Junaid"};
-
-        String caption[] = new String[]{
-                "keep mati clean please!!",
-                "When is the result coming......",
-                "we have achieved it",
-                "how was the mushaira event?? kfndslknfdlk" +
-                        "sknslknsklnlskn" +
-                        "ksmlkslksnklsnlks" +
-                        "snslknslknslkns" +
-                        "lsnlksnlsknslknslknslknslnslkns" +
-                        "lsnlsknlsknlsknlsnlksn"
-        };
-        String commentCount []= new String[]{
-                "2",
-                "10",
-                "6",
-                "12"
-        };
-
-        String Degree [] = new String[]{
-                "Bs Computer and Information Sciences",
-                "Bs Electrical Engineering",
-                "Ms Cyber Security",
-                "Bs Electrical Engineering"
-        };
-
-        int dpID[] = new int[]{
-                R.drawable.user_photo,
-                R.drawable.ahmedraza,
-                R.drawable.abdulrafy,
-                R.drawable.ahsanjunaid,
-        };
-        List<List<SlideModel>> images= new ArrayList<>();
-        images.add(slideModelList);
-        images.add(slideModelList);
-        images.add(slideModelList);
-        images.add(slideModelList);
-
-
-        discussionPanelModelArrayList = new ArrayList<>();
-
-        for (int i = 0; i < dpID.length; i++){
-            DiscussionPanelModel discussionPanelModel = new DiscussionPanelModel(name[i], Degree[i], caption[i], images.get(i), commentCount[i], dpID[i]);
-            discussionPanelModelArrayList.add(discussionPanelModel);
-        }
-
+        Log.i("putDataIntoRecyclerView", "putDataIntoRecyclerView");
+        discussionPanelRVAdapter = new DiscussionPanelRVAdapter(postsModelList,getContext());
+        recyclerView.setAdapter(discussionPanelRVAdapter);
     }
 }

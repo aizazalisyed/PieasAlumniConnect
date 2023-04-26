@@ -6,6 +6,7 @@ import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostJobModel;
+import java.com.alumnimanagmentsystem.Model.PostsModel;
 import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.Model.SpecialRequests;
 import java.util.List;
@@ -77,4 +78,13 @@ public interface UserService {
 
     @POST("/jobs")
     Call<PostJobModel> createJobPost(@Header("Authorization") String authToken, @Body PostJobModel jobModel);
+
+    @GET("/posts")
+    Call<List<PostsModel>> getPosts(@Header("Authorization") String authToken, @Query("limit") Integer limit, @Query("offset") Integer offset);
+
+    @GET("/alumni/{id}/avatar")
+    Call<ResponseBody> fetchAlumniPic(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("/postimages/{id}")
+    Call<ResponseBody> fetchPostImage(@Header("Authorization") String authToken, @Path("id") int id);
 }

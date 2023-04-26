@@ -13,7 +13,7 @@
         android:id="@+id/panel_user_photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/user_photo"
+        android:src="@drawable/default_user"
         android:scaleType="centerCrop"
         app:civ_border_color="@color/black"
         android:layout_marginTop="3dp"
@@ -70,7 +70,7 @@
         app:readMoreColor="@color/blue_100"
         app:readMoreText="...read more"/>
 
-    <com.denzcoskun.imageslider.ImageSlider
+    <ImageView
         android:id="@+id/panel_image_view"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -80,7 +80,6 @@
         app:iss_auto_cycle="false"
         app:iss_unselected_dot="@drawable/unselected"
         app:iss_selected_dot="@drawable/selected"
-
         />
     <TextView
         android:id="@+id/panel_comment_count"

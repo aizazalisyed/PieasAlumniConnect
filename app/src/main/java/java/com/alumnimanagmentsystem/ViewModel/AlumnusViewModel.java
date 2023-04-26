@@ -77,7 +77,7 @@ public class AlumnusViewModel extends AndroidViewModel {
                         // display the image data in a ImageView or save it
                         bitmapMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
                     } else {
-                        // TODO
+                        bitmapMutableLiveData.postValue(null);
                     }
                 }
                 else {

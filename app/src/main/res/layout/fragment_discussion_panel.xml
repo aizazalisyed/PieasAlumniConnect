@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="1dp"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/discussion_panel_recycler_view_iteam"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -30,4 +29,12 @@
         app:borderWidth="0dp"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
         />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone" />
 </RelativeLayout>
