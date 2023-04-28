@@ -67,6 +67,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="18dp"
         app:readMoreMaxLine="2"
+        android:layout_marginEnd="10dp"
         app:readMoreColor="@color/blue_100"
         app:readMoreText="...read more"/>
 

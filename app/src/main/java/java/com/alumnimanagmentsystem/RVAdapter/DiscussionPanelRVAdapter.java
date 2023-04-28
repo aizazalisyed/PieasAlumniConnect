@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -28,8 +34,11 @@ import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
 import java.com.alumnimanagmentsystem.R;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,10 +53,16 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
     String defaultValue = "";
     MutableLiveData<Bitmap> bitmapMutableLiveData = new MutableLiveData<>();
     MutableLiveData<Bitmap> bitmapPostImageMutableLiveData = new MutableLiveData<>();
+    private LruCache<String, Bitmap> imageCache;
 
     public DiscussionPanelRVAdapter(ArrayList<PostsModel> postsModelArrayList, Context context) {
         this.postsModelArrayList = postsModelArrayList;
         this.context = context;
+
+        // initialize the image cache with a maximum size of 10 MB
+        int maxCacheSize = 10 * 1024 * 1024; // 10 MB
+        imageCache = new LruCache<>(maxCacheSize);
+
     }
 
     @NonNull
@@ -85,12 +100,16 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
 
        holder.commentCount.setText(String.valueOf(postsModel.getThreads().size()));
 
-       if(getPostImage(postsModel.getPost_id()) != null){
-           holder.imageView.setImageBitmap(getPostImage(postsModel.getPost_id()));
-       }
-       else {
-           holder.imageView.setVisibility(View.GONE);
-       }
+
+       String url = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000/postimages/"+postsModel.getPost_id();
+       GlideUrl glideUrl = new GlideUrl(url,
+               new LazyHeaders.Builder()
+                       .addHeader("Authorization",retrieveToken())
+                       .build());
+       Glide.with(context)
+               .load(glideUrl)
+               .into(holder.imageView);
+
 //todo
 //        holder.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
 //            @Override
@@ -184,12 +203,14 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
-
                     if (response.body() != null) {
                         // display the image data in a ImageView or save it
                         bitmapMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
+                        Log.i("returning correct image", "returning correct image");
                     }
-                    else bitmapMutableLiveData.postValue(null);
+                    else {bitmapMutableLiveData.postValue(null);
+                        Log.i("returning incorrect image", "returning incorrect image");
+                    }
                 }
             }
 
@@ -198,30 +219,28 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
 
             }
         });
-
+        Log.i("returning image back", "returning image back");
         return bitmapMutableLiveData.getValue();
     }
-    public Bitmap getPostImage(int id){
-
-    Call<ResponseBody> call = RetrofitClient.getUserService().fetchPostImage(retrieveToken(),id);
-    call.enqueue(new Callback<ResponseBody>() {
-        @Override
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            if (response.isSuccessful()){
-
-                if (response.body() != null) {
-                    // display the image data in a ImageView or save it
-                    bitmapPostImageMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
-                }
-                else bitmapPostImageMutableLiveData.postValue(null);
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-        }
-    });
-    return bitmapPostImageMutableLiveData.getValue();
-    }
+//    public Bitmap getPostImage(int id){
+//
+//    Call<ResponseBody> call = RetrofitClient.getUserService().fetchPostImage(retrieveToken(),id);
+//    call.enqueue(new Callback<ResponseBody>() {
+//        @Override
+//        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//            if (response.isSuccessful()){
+//
+//                    // display the image data in a ImageView or save it
+//                    bitmapPostImageMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
+//
+//            }
+//        }
+//
+//        @Override
+//        public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//        }
+//    });
+//    return bitmapPostImageMutableLiveData.getValue();
+//    }
 }

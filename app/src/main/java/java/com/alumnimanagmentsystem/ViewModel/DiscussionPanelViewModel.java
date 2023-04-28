@@ -44,6 +44,12 @@ public class DiscussionPanelViewModel extends AndroidViewModel {
         return token;
     }
     public void makeApiCall(){
+
+
+        if (!hasMoreData) {
+            return;
+        }
+
         Call<List<PostsModel>> call = RetrofitClient.getUserService().getPosts(retrieveToken(),limit,offset);
         call.enqueue(new Callback<List<PostsModel>>() {
             @Override
