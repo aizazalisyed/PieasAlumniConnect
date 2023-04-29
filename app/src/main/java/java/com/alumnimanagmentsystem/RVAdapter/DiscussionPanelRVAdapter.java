@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -16,15 +17,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -33,6 +39,10 @@ import java.com.alumnimanagmentsystem.Activities.CommentActivity;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
 import java.com.alumnimanagmentsystem.R;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,18 +61,9 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
     String defaultValue = "";
-    MutableLiveData<Bitmap> bitmapMutableLiveData = new MutableLiveData<>();
-    MutableLiveData<Bitmap> bitmapPostImageMutableLiveData = new MutableLiveData<>();
-    private LruCache<String, Bitmap> imageCache;
-
     public DiscussionPanelRVAdapter(ArrayList<PostsModel> postsModelArrayList, Context context) {
         this.postsModelArrayList = postsModelArrayList;
         this.context = context;
-
-        // initialize the image cache with a maximum size of 10 MB
-        int maxCacheSize = 10 * 1024 * 1024; // 10 MB
-        imageCache = new LruCache<>(maxCacheSize);
-
     }
 
     @NonNull
@@ -75,63 +76,94 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
     @Override
     public void onBindViewHolder(@NonNull DiscussionPanelRVAdapter.ViewHolder holder, int position) {
 
-       PostsModel postsModel = postsModelArrayList.get(position);
+        PostsModel postsModel = postsModelArrayList.get(position);
 
-       if(postsModel.getAlumni() != null){
-           holder.alumniName.setText(postsModel.getAlumni().getName());
-           holder.degreeName.setText(postsModel.getAlumni().getDegree().getDegree_name());
+        if (postsModel.getAlumni() != null) {
+            holder.alumniName.setText(postsModel.getAlumni().getName());
+            holder.degreeName.setText(postsModel.getAlumni().getDegree().getDegree_name());
+            String urlAlumniProfile = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000" + "/alumni/"+postsModel.getAlumni().getAlumni_id()+"/avatar";
+                GlideUrl glideUrl = new GlideUrl(urlAlumniProfile,
+                        new LazyHeaders.Builder()
+                                .addHeader("Authorization", retrieveToken())
+                                .build());
+                Glide.with(context)
+                        .load(glideUrl)
+                        .placeholder(R.drawable.user_photo)
+                        .into(holder.dpID);
 
-           if(getProfilePic(postsModel.getAlumni().getAlumni_id()) != null) {
-               holder.dpID.setImageBitmap(getProfilePic(postsModel.getAlumni().getAlumni_id()));
-           }
-       }
-       else {
-           holder.alumniName.setText("Admin");
-           holder.degreeName.setVisibility(View.GONE);
-       }
-       if(postsModel.getContent().isEmpty()){
+        } else {
+            holder.alumniName.setText("Admin");
+            holder.degreeName.setVisibility(View.GONE);
+        }
+        if (postsModel.getContent().isEmpty()) {
 
-           holder.caption.setVisibility(View.GONE);
-       }
-       else{
-           holder.caption.setText(postsModel.getContent());
+            holder.caption.setVisibility(View.GONE);
+        } else {
+            holder.caption.setText(postsModel.getContent());
 
-       }
+        }
 
-       holder.commentCount.setText(String.valueOf(postsModel.getThreads().size()));
+        holder.commentCount.setText(String.valueOf(postsModel.getThreads().size()));
+        holder.panel_post_time.setText(postsModel.getCreated_on());
+
+        String url = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000/postimages/" + postsModel.getPost_id();
 
 
-       String url = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000/postimages/"+postsModel.getPost_id();
-       GlideUrl glideUrl = new GlideUrl(url,
-               new LazyHeaders.Builder()
-                       .addHeader("Authorization",retrieveToken())
-                       .build());
-       Glide.with(context)
-               .load(glideUrl)
-               .into(holder.imageView);
+            GlideUrl glideUrl = new GlideUrl(url,
+                    new LazyHeaders.Builder()
+                            .addHeader("Authorization", retrieveToken())
+                            .build());
+            Glide.with(context)
+                    .load(glideUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            holder.imageView.setVisibility(View.GONE);
+                            return false;
+                        }
 
-//todo
-//        holder.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                int id;
-//                id = item.getItemId();
-//                if(id == R.id.nav_comment){
-//                    Intent i = new Intent(context, CommentActivity.class);
-//                    i.putExtra("userName", discussionPanelModel.getName());
-//                    i.putExtra("userDegree", discussionPanelModel.getDegree());
-//                    i.putExtra("userCaption", discussionPanelModel.getCaption());
-//                    i.putExtra("userDp", discussionPanelModel.getDpID());
-//                   // i.putExtra("imagePost", (Serializable) discussionPanelModel.getImages());
-//                    context.startActivity(i);
-//                    Animatoo.INSTANCE.animateCard(context);
-//                }
-//                else{
-//                    reportComment();
-//                }
-//                return false;
-//            }
-//        });
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.imageView.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+                    })
+                    .into(holder.imageView);
+
+
+        holder.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id;
+                id = item.getItemId();
+                if(id == R.id.nav_comment){
+
+                    Intent i = new Intent(context, CommentActivity.class);
+                    if (postsModel.getAlumni() != null) {
+                        i.putExtra("userName", postsModel.getAlumni().getName());
+                        i.putExtra("userDegree", postsModel.getAlumni().getDegree().getDegree_name());
+                        i.putExtra("userId",String.valueOf(postsModel.getAlumni().getAlumni_id()));
+
+                    }
+                    else{
+                        i.putExtra("userName", "Admin");
+                        i.putExtra("userDegree", "");
+                    }
+
+                    i.putExtra("userCaption", postsModel.getContent());
+                    i.putExtra("postId", postsModel.getPost_id());
+                    i.putExtra("post_time", postsModel.getCreated_on());
+                    i.putExtra("Token",retrieveToken());
+                    i.putExtra("commentCount",postsModel.getThreads().size());
+                    context.startActivity(i);
+                    Animatoo.INSTANCE.animateCard(context);
+                }
+                else{
+                    reportComment();
+                }
+                return false;
+            }
+        });
     }
 
     public void addItems(ArrayList<PostsModel> items) {
@@ -179,7 +211,7 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                 // The dialog is automatically dismissed when a dialog button is clicked.
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Continue with delete operation
+                        // todo: report api
                     }
                 })
 
@@ -194,53 +226,4 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
         String token = sharedPreferences.getString(key, defaultValue);
         return token;
     }
-
-    public Bitmap getProfilePic(int id){
-
-
-        Call<ResponseBody> call = RetrofitClient.getUserService().fetchAlumniPic(retrieveToken(),id);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
-                    if (response.body() != null) {
-                        // display the image data in a ImageView or save it
-                        bitmapMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
-                        Log.i("returning correct image", "returning correct image");
-                    }
-                    else {bitmapMutableLiveData.postValue(null);
-                        Log.i("returning incorrect image", "returning incorrect image");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-        Log.i("returning image back", "returning image back");
-        return bitmapMutableLiveData.getValue();
-    }
-//    public Bitmap getPostImage(int id){
-//
-//    Call<ResponseBody> call = RetrofitClient.getUserService().fetchPostImage(retrieveToken(),id);
-//    call.enqueue(new Callback<ResponseBody>() {
-//        @Override
-//        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//            if (response.isSuccessful()){
-//
-//                    // display the image data in a ImageView or save it
-//                    bitmapPostImageMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
-//
-//            }
-//        }
-//
-//        @Override
-//        public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//        }
-//    });
-//    return bitmapPostImageMutableLiveData.getValue();
-//    }
 }

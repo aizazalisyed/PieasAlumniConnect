@@ -1,12 +1,14 @@
 package java.com.alumnimanagmentsystem.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -29,17 +38,15 @@ public class CommentActivity extends AppCompatActivity {
 
     private TextView userName;
     private TextView userDegree;
-    private TextView usercaption;
+    private TextView userCaption;
     private ImageView userDp;
     private ImageView userImagePost;
     private EditText commentInputEditText;
     private ImageView sendButtonImageView;
+    TextView comment_count;
     BottomNavigationView bottomNavigationView;
+    TextView post_time;
 
-
-    private int userProfileID;
-    private int imagePost;
-    private String name, degree, caption;
 
     ArrayList<CommentActivityRVModel> commentActivityRVModelArrayList;
     RecyclerView recyclerView;
@@ -54,51 +61,81 @@ public class CommentActivity extends AppCompatActivity {
 
         userName = findViewById(R.id.panel_user_name);
         userDegree = findViewById(R.id.panel_user_department);
-        usercaption = findViewById(R.id.panel_discription_text_view);
+        userCaption = findViewById(R.id.panel_discription_text_view);
         userDp = findViewById(R.id.panel_user_photo);
-//        userImagePost = findViewById(R.id.panel_image_view);
+        userImagePost = findViewById(R.id.panel_image_view);
         commentInputEditText = findViewById(R.id.comment_input_edit_text);
         sendButtonImageView = findViewById(R.id.sendButtonImageView);
         bottomNavigationView = findViewById(R.id.bottom_nav_panel);
+        post_time = findViewById(R.id.post_time);
+        comment_count = findViewById(R.id.comment_count);
 
-        name = getIntent().getStringExtra("userName");
-        degree = getIntent().getStringExtra("userDegree");
-        userProfileID = getIntent().getIntExtra("userDp",0);
 
-        //Bundle extras = getIntent().getExtras();
-        //int extrasInt = extras.getInt("imagePost");
-        caption = getIntent().getStringExtra("userCaption");
+        Bundle extras = getIntent().getExtras();
 
-        userDp.setImageResource(userProfileID);
-        userName.setText(name);
-        userDegree.setText(degree);
-        usercaption.setText(caption);
-      //  userImagePost.setImageResource(extrasInt);
+        userName.setText(extras.getString("userName"));
+        if (extras.get("userDegree").toString().isEmpty()) {
+            userDegree.setVisibility(View.GONE);
+            String urlAlumniProfile = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000" + "/alumni/" + extras.getInt("userId") + "/avatar";
+            GlideUrl glideUrl = new GlideUrl(urlAlumniProfile,
+                    new LazyHeaders.Builder()
+                            .addHeader("Authorization", extras.getString("Token"))
+                            .build());
+            Glide.with(this)
+                    .load(glideUrl)
+                    .placeholder(R.drawable.default_user)
+                    .into(userDp);
+        } else {
+            userDegree.setText(extras.getString("userDegree"));
+        }
+        post_time.setText(extras.getString("post_time"));
+        if (extras.get("userCaption").toString().isEmpty()) {
+            userCaption.setVisibility(View.GONE);
+        } else {
+            userCaption.setText(extras.getString("userCaption"));
+        }
+        comment_count.setText(String.valueOf(extras.getInt("commentCount")));
 
-        /*if (extrasInt == 0){
-            userImagePost.setVisibility(View.GONE);
-        }*/
+        String url = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000/postimages/" + extras.getInt("postId");
 
-        Context context = this;
+        GlideUrl glideUrl = new GlideUrl(url,
+                new LazyHeaders.Builder()
+                        .addHeader("Authorization", extras.getString("Token"))
+                        .build());
+        Glide.with(this)
+                .load(glideUrl)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                       userImagePost.setVisibility(View.GONE);
+                        return false;
+                    }
 
-    sendButtonImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        userImagePost.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
+                .into(userImagePost);
+
+        sendButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(CommentActivity.this, "comment posted", Toast.LENGTH_SHORT).show();
                 finish();
                 startActivity(getIntent());
-                Animatoo.INSTANCE.animateFade(context);
+                Animatoo.INSTANCE.animateFade(CommentActivity.this);
             }
         });
 
-
-        initializeData();
-
         recyclerView = findViewById(R.id.comment_activity_recycler_view);
         recyclerView.setNestedScrollingEnabled(false);
-        commentRVAdapter = new CommentRVAdapter(commentActivityRVModelArrayList, this);
-        recyclerView.setAdapter(commentRVAdapter);
-        commentRVAdapter.notifyDataSetChanged();
+        recyclerView.setVisibility(View.GONE);
+
+//        commentRVAdapter = new CommentRVAdapter(commentActivityRVModelArrayList, this);
+//        recyclerView.setAdapter(commentRVAdapter);
+//        commentRVAdapter.notifyDataSetChanged();
 
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -106,60 +143,19 @@ public class CommentActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id;
                 id = item.getItemId();
-                if(id == R.id.nav_comment){
+                if (id == R.id.nav_comment) {
                     commentInputEditText.requestFocus();
                     showSoftKeyboard(commentInputEditText);
 
-                }
-                else{
+                } else {
                     reportComment();
                 }
                 return false;
             }
         });
-            }
-
-    private void initializeData(){
-        String name[] = new String[]{
-                "Ahmed Raza",
-                "Abdul Rafy",
-                "Syed Aizaz Ali",
-                "Ahsand Junaid"};
-
-        int dpID[] = new int[]{
-                R.drawable.user_photo,
-                R.drawable.ahmedraza,
-                R.drawable.abdulrafy,
-                R.drawable.ahsanjunaid,
-        };
-
-        String Degree [] = new String[]{
-                "Bs Computer and Information Sciences",
-                "Bs Electrical Engineering",
-                "Ms Cyber Security",
-                "Bs Electrical Engineering"
-        };
-        String caption[] = new String[]{
-                "keep mati clean please!!",
-                "When is the result coming......",
-                "we have achieved it",
-                "how was the mushaira event?? kfndslknfdlk" +
-                        "sknslknsklnlskn" +
-                        "ksmlkslksnklsnlks" +
-                        "snslknslknslkns" +
-                        "lsnlksnlsknslknslknslknslnslkns" +
-                        "lsnlsknlsknlsknlsnlksn"
-        };
-
-        commentActivityRVModelArrayList = new ArrayList<>();
-
-        for (int i = 0; i < dpID.length; i++){
-            CommentActivityRVModel commentActivityRVModel = new CommentActivityRVModel(dpID[i], name[i], Degree[i], caption[i]);
-            commentActivityRVModelArrayList.add(commentActivityRVModel);
-        }
-
     }
-    private void reportComment(){
+
+    private void reportComment() {
         new AlertDialog.Builder(this)
                 .setTitle("Report Post")
                 .setMessage("Are you sure you want to report this post?")
@@ -177,6 +173,7 @@ public class CommentActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
     public void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)

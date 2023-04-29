@@ -21,7 +21,7 @@
             android:id="@+id/panel_user_photo"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/user_photo"
+            android:src="@drawable/default_user"
             android:scaleType="centerCrop"
             app:civ_border_color="@color/black"
             android:layout_marginTop="10dp"
@@ -54,7 +54,7 @@
             android:textColor="@color/darker_gray"
             />
         <TextView
-            android:id="@+id/panel_post_time"
+            android:id="@+id/post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
@@ -75,7 +75,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="6dp"/>
 
-        <com.denzcoskun.imageslider.ImageSlider
+        <ImageView
             android:id="@+id/panel_image_view"
             android:layout_width="match_parent"
             android:layout_height="350dp"
@@ -89,7 +89,7 @@
             android:layout_marginEnd="6dp"
             />
         <TextView
-            android:id="@+id/panel_comment_count"
+            android:id="@+id/comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10"

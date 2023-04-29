@@ -84,7 +84,4 @@ public interface UserService {
 
     @GET("/alumni/{id}/avatar")
     Call<ResponseBody> fetchAlumniPic(@Header("Authorization") String authToken, @Path("id") int id);
-
-    @GET("/postimages/{id}")
-    Call<ResponseBody> fetchPostImage(@Header("Authorization") String authToken, @Path("id") int id);
 }
