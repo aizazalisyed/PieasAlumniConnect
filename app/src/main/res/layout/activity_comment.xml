@@ -144,7 +144,7 @@
                     android:id="@+id/user_photo_comment_edit_text"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/user_photo"
+                    android:src="@drawable/default_user"
                     android:scaleType="centerCrop"
                     app:civ_border_color="@color/black"
                     android:layout_marginStart="6dp"

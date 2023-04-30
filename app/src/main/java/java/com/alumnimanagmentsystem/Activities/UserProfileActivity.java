@@ -310,7 +310,6 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         File file = new File(path);
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-
         MultipartBody.Part body = MultipartBody.Part.createFormData("photo",file.getName(),requestFile);
 
         Call<ResponseBody> call = RetrofitClient.getUserService().postImage(retrieveToken(),body);

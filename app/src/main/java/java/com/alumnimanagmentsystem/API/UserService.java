@@ -3,15 +3,18 @@ package java.com.alumnimanagmentsystem.API;
 import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.Model.Comment;
 import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostJobModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
+import java.com.alumnimanagmentsystem.Model.ReportPost;
 import java.com.alumnimanagmentsystem.Model.SpecialRequest;
 import java.com.alumnimanagmentsystem.Model.SpecialRequests;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -82,6 +85,16 @@ public interface UserService {
     @GET("/posts")
     Call<List<PostsModel>> getPosts(@Header("Authorization") String authToken, @Query("limit") Integer limit, @Query("offset") Integer offset);
 
-    @GET("/alumni/{id}/avatar")
-    Call<ResponseBody> fetchAlumniPic(@Header("Authorization") String authToken, @Path("id") int id);
+    @POST("/posts/{id}/threads")
+        Call<ResponseBody> postComment(@Header("Authorization") String authToken, @Body Comment comment, @Path("id") int id);
+    @PATCH("/posts/{id}/report")
+    Call <ResponseBody> reportPatchPost(@Header("Authorization") String authToken,@Body ReportPost reportPost, @Path("id") int id);
+    @PATCH("posts/threads/{id}/report")
+    Call <ResponseBody> reportPatchThread(@Header("Authorization") String authToken,@Body ReportPost reportPost, @Path("id") int id);
+
+    @POST("/posts")
+    @Multipart
+    Call<ResponseBody> createDiscussionPost( @Header("Authorization") String authToken,
+                                             @Part MultipartBody.Part photo,
+                                             @Part("content") RequestBody content);
 }

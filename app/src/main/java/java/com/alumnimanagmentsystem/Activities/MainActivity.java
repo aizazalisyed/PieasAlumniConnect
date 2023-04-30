@@ -105,12 +105,20 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        if(!mainActivityViewModel.navigationItemClick) {
+        // Load HomeFragment if the app is loaded for the first time
+        if (!mainActivityViewModel.isFirstTimeLoad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Home");
+            bottomNavigationView.setSelectedItemId(R.id.bottom_nav_home);
+            mainActivityViewModel.isFirstTimeLoad = true;
         }
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Home");
-        bottomNavigationView.setSelectedItemId(R.id.bottom_nav_home);
 
+        boolean postUploaded = getIntent().getBooleanExtra("postUploaded", false);
+        if (postUploaded) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new DiscussionPanelFragment()).commit();
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Discussion Panel");
+            bottomNavigationView.setSelectedItemId(R.id.bottom_nav_panel);
+        }
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             mainActivityViewModel.navigationItemClick = true;

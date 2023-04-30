@@ -6,10 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewModel extends ViewModel {
 
-    public Boolean navigationItemClick;
-
-    public MainActivityViewModel() {
-        navigationItemClick = Boolean.FALSE;
-
-    }
+    public boolean isFirstTimeLoad = false;
+    public boolean navigationItemClick = false;
 }

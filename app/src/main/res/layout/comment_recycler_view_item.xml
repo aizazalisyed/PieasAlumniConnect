@@ -12,7 +12,7 @@
             android:id="@+id/comment_user_photo"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/user_photo"
+            android:src="@drawable/default_user"
             android:scaleType="centerCrop"
             app:civ_border_color="@color/black"
             android:layout_marginTop="3dp"
@@ -28,24 +28,34 @@
         android:layout_toEndOf="@id/comment_user_photo"
         android:background="@drawable/comment_background"
         >
-
+        <ImageView
+            android:id="@+id/reportComment"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="10dp"
+            />
         <TextView
             android:id="@+id/comment_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="@string/userNameProfile"
+            android:text="loading..."
             android:textStyle="bold"
             android:layout_marginStart="13dp"
             android:textColor="@color/black"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
+            android:layout_below="@id/reportComment"
             />
         <TextView
             android:id="@+id/comment_user_department"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="@string/userDegreeProfile"
+            android:text="loading..."
             android:ellipsize="end"
             android:maxLines="1"
             android:layout_marginLeft="80dp"
@@ -55,12 +65,12 @@
             android:textColor="@color/darker_gray"
             />
         <TextView
-            android:id="@+id/panel_post_time"
+            android:id="@+id/post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_below="@id/comment_user_department"
-            android:text="@string/date_of_post"
+            android:text="loading..."
             android:textSize="12sp"
             android:textColor="@color/darker_gray"
             />
@@ -68,8 +78,8 @@
             android:id="@+id/comment_thread_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/panel_post_time"
-            android:text="testing"
+            android:layout_below="@id/post_time"
+            android:text="loading..."
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginTop="10dp"

@@ -4,22 +4,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
@@ -29,26 +25,17 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Activities.CommentActivity;
-import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
+import java.com.alumnimanagmentsystem.Model.ReportPost;
 import java.com.alumnimanagmentsystem.R;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -137,7 +124,6 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                 int id;
                 id = item.getItemId();
                 if(id == R.id.nav_comment){
-
                     Intent i = new Intent(context, CommentActivity.class);
                     if (postsModel.getAlumni() != null) {
                         i.putExtra("userName", postsModel.getAlumni().getName());
@@ -155,11 +141,12 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                     i.putExtra("post_time", postsModel.getCreated_on());
                     i.putExtra("Token",retrieveToken());
                     i.putExtra("commentCount",postsModel.getThreads().size());
+                    i.putExtra("position", holder.getAdapterPosition());
                     context.startActivity(i);
                     Animatoo.INSTANCE.animateCard(context);
                 }
                 else{
-                    reportComment();
+                    reportComment(postsModel.getPost_id());
                 }
                 return false;
             }
@@ -202,7 +189,7 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
 
     }
 
-    private void reportComment(){
+    private void reportComment(int id){
         new AlertDialog.Builder(context)
                 .setTitle("Report Post")
                 .setMessage("Are you sure you want to report this post?")
@@ -212,6 +199,7 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // todo: report api
+                        reportPost(id);
                     }
                 })
 
@@ -225,5 +213,23 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
         SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(key, defaultValue);
         return token;
+    }
+
+    private void reportPost(int id){
+
+        ReportPost reportPost = new ReportPost();
+        Call<ResponseBody> call = RetrofitClient.getUserService().reportPatchPost(retrieveToken(),reportPost,id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(context, "Post Reported", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
     }
 }

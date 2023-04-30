@@ -3,26 +3,48 @@ package java.com.alumnimanagmentsystem.Activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import com.denzcoskun.imageslider.ImageSlider;
-import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.sangcomz.fishbun.FishBun;
-import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
+
+import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.R;
+import java.com.alumnimanagmentsystem.RealPathUtil;
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UploadPostActivity extends AppCompatActivity {
     ImageView cameraButton;
     EditText descriptionEditText;
-    ImageSlider imageSlider;
     ImageView imageView;
     ImageView galleryButton;
+    String path;
+    Button postButton;
+    ProgressBar progressBar;
+    String fileName = "My_Pref";
+    String key = "TOKEN_STRING";
+    String defaultValue = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +54,17 @@ public class UploadPostActivity extends AppCompatActivity {
 
         cameraButton = findViewById(R.id.cameraButton);
         descriptionEditText = findViewById(R.id.descriptionEditText);
-        imageSlider = findViewById(R.id.image_view);
-        imageView = findViewById(R.id.image_view_single);
+        imageView = findViewById(R.id.image_view);
         galleryButton = findViewById(R.id.galleryButton);
-
+        postButton = findViewById(R.id.postButton);
         descriptionEditText.requestFocus();
         showSoftKeyboard(descriptionEditText);
+        progressBar = findViewById(R.id.progressBar);
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.with(UploadPostActivity.this)
+                ImagePicker.Companion.with(UploadPostActivity.this)
                         .cameraOnly()
                         .start();
             }
@@ -51,11 +73,17 @@ public class UploadPostActivity extends AppCompatActivity {
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 10);
+            }
+        });
 
-                FishBun.with(UploadPostActivity.this).setImageAdapter(new GlideAdapter())
-                        .setMaxCount(10)
-                        .setMinCount(1)
-                        .startAlbumWithOnActivityResult(v.hashCode());
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postData();
             }
         });
     }
@@ -63,7 +91,21 @@ public class UploadPostActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //todo: api sy connect karni ha
+
+        if(requestCode == 10 && resultCode == Activity.RESULT_OK){
+            assert data != null;
+            Uri uri = data.getData();
+            path = RealPathUtil.getRealPath(UploadPostActivity.this, uri);
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+           imageView.setImageBitmap(bitmap);
+            //sendPicViaApi();
+        }
+        if(requestCode == ImagePicker.REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            path = RealPathUtil.getRealPath(this, uri);
+            imageView.setImageURI(uri);
+            //sendPicViaApi();
+        }
     }
 
     public void showSoftKeyboard(View view) {
@@ -72,5 +114,48 @@ public class UploadPostActivity extends AppCompatActivity {
                     getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
+    }
+
+    private void postData(){
+        progressBar.setVisibility(View.VISIBLE);
+        MultipartBody.Part body = null;
+        RequestBody titleBody = null;
+
+        // Check if image path is not null and create MultipartBody.Part
+        if(path != null){
+            File file = new File(path);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            body = MultipartBody.Part.createFormData("filename",file.getName(),requestFile);
+        }
+
+        // Check if title is not null and create RequestBody
+        if(descriptionEditText.getText() != null){
+            titleBody = RequestBody.create(MediaType.parse("text/plain"), descriptionEditText.getText().toString());
+        }
+
+        Call<ResponseBody> call = RetrofitClient.getUserService().createDiscussionPost(retrieveToken(), body, titleBody);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(UploadPostActivity.this, "Post Created", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(UploadPostActivity.this, MainActivity.class);
+                intent.putExtra("postUploaded", true);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(UploadPostActivity.this, "Post Can't be Created", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public String retrieveToken(){
+        SharedPreferences sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString(key, defaultValue);
+        return token;
     }
 }

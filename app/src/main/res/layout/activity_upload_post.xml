@@ -42,6 +42,15 @@
             android:scaleType="centerCrop"
             android:src="@drawable/user_photo"
             app:civ_border_color="@color/black" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/user_name"
@@ -83,21 +92,8 @@
             android:paddingEnd="20dp"
             android:paddingBottom="10dp" />
 
-        <com.denzcoskun.imageslider.ImageSlider
-            android:id="@+id/image_view"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_below="@id/descriptionEditText"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="6dp"
-            android:scaleType="centerCrop"
-            android:visibility="gone"
-            app:iss_auto_cycle="false"
-            app:iss_selected_dot="@drawable/selected"
-            app:iss_unselected_dot="@drawable/unselected" />
         <ImageView
-            android:id="@+id/image_view_single"
+            android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_below="@id/descriptionEditText"

@@ -7,8 +7,8 @@ public class PostThreadModel {
     public String status;
     public String created_on;
     public int post_id;
-    public int creater_id_alumni;
-    public int creater_id_operator;
+    public Integer creater_id_alumni;
+    public Integer creater_id_operator;
     public Alumnus alumni;
 
     public int getThread_id() {
@@ -31,11 +31,11 @@ public class PostThreadModel {
         return post_id;
     }
 
-    public int getCreater_id_alumni() {
+    public Integer getCreater_id_alumni() {
         return creater_id_alumni;
     }
 
-    public int getCreater_id_operator() {
+    public Integer getCreater_id_operator() {
         return creater_id_operator;
     }
 
