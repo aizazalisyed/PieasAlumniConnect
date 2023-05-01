@@ -65,32 +65,4 @@ public class AlumnusViewModel extends AndroidViewModel {
 
         return alumnus;
     }
-
-    public LiveData<Bitmap> getProfilePic(){
-
-        Call<ResponseBody> call = RetrofitClient.getUserService().fetchCaptcha(retrieveToken());
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        // display the image data in a ImageView or save it
-                        bitmapMutableLiveData.postValue(BitmapFactory.decodeStream(response.body().byteStream()));
-                    } else {
-                        bitmapMutableLiveData.postValue(null);
-                    }
-                }
-                else {
-                    // TODO
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-        return bitmapMutableLiveData;
-    }
-
-
 }

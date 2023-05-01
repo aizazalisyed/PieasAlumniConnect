@@ -65,7 +65,7 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
 
         PostsModel postsModel = postsModelArrayList.get(position);
 
-        if (postsModel.getAlumni() != null) {
+        if (postsModel.creater_id_operator == null) {
             holder.alumniName.setText(postsModel.getAlumni().getName());
             holder.degreeName.setText(postsModel.getAlumni().getDegree().getDegree_name());
             String urlAlumniProfile = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000" + "/alumni/"+postsModel.getAlumni().getAlumni_id()+"/avatar";
@@ -75,12 +75,13 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                                 .build());
                 Glide.with(context)
                         .load(glideUrl)
-                        .placeholder(R.drawable.user_photo)
+                        .placeholder(R.drawable.default_user)
                         .into(holder.dpID);
 
         } else {
             holder.alumniName.setText("Admin");
             holder.degreeName.setVisibility(View.GONE);
+            holder.dpID.setImageResource(R.drawable.default_user);
         }
         if (postsModel.getContent().isEmpty()) {
 

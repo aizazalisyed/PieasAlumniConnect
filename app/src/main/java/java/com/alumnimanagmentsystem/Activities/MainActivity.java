@@ -9,7 +9,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -39,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView toolBarDrawerIcon;
     MainActivityViewModel mainActivityViewModel;
     AlumnusViewModel alumnusViewModel;
+    String fileName = "My_Pref";
+    String key = "TOKEN_STRING";
+    String defaultValue = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         alumnusViewModel = new ViewModelProvider(this).get(AlumnusViewModel.class);
-
-
 
 
 
@@ -73,12 +79,9 @@ public class MainActivity extends AppCompatActivity {
         userNameHeaderLayout = headerView.findViewById(R.id.userNameHeaderLayout);
         nav_user_photo = headerView.findViewById(R.id.nav_user_photo);
 
-        alumnusViewModel.getProfilePic().observe(this, new Observer<Bitmap>() {
-            @Override
-            public void onChanged(Bitmap bitmap) {
-                nav_user_photo.setImageBitmap(bitmap);
-            }
-        });
+        String myProfileUrl = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000"+"/alumni/avatar/me";
+        GlideUrl myPicGlideUrl = new GlideUrl(myProfileUrl, new LazyHeaders.Builder().addHeader("Authorization",retrieveToken()).build());
+        Glide.with(this).load(myPicGlideUrl).placeholder(R.drawable.default_user).into(nav_user_photo);
 
         alumnusViewModel.getAlumnus().observe(this, new Observer<Alumnus>() {
             @Override
@@ -119,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
             Objects.requireNonNull(getSupportActionBar()).setTitle("Discussion Panel");
             bottomNavigationView.setSelectedItemId(R.id.bottom_nav_panel);
         }
+
+        boolean GettingBackCommentActivity = getIntent().getBooleanExtra("GettingBackCommentActivity", false);
+        if(GettingBackCommentActivity){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new DiscussionPanelFragment()).commit();
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Discussion Panel");
+            bottomNavigationView.setSelectedItemId(R.id.bottom_nav_panel);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             mainActivityViewModel.navigationItemClick = true;
@@ -178,5 +189,10 @@ public class MainActivity extends AppCompatActivity {
     private void switchToJobListActivity(){
         Intent switchActivityIntent = new Intent(this, JobListActivity.class);
         startActivity(switchActivityIntent);
+    }
+    public String retrieveToken(){
+        SharedPreferences sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString(key, defaultValue);
+        return token;
     }
 }

@@ -25,6 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
@@ -127,9 +130,9 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
       });
 
 
-
-
-      alumnusViewModel.getProfilePic().observe(this, bitmap -> {alumniProfilePic.setImageBitmap(bitmap);});
+        String myProfileUrl = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000"+"/alumni/avatar/me";
+        GlideUrl myPicGlideUrl = new GlideUrl(myProfileUrl, new LazyHeaders.Builder().addHeader("Authorization",retrieveToken()).build());
+        Glide.with(this).load(myPicGlideUrl).placeholder(R.drawable.default_user).into(alumniProfilePic);
 
         addExperienceButton.setOnClickListener(new View.OnClickListener() {
             @Override

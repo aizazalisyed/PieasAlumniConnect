@@ -240,16 +240,9 @@ public class CommentActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-        if (fragmentType == 1) {
-            // Create a new instance of the fragment
-            DiscussionPanelFragment discussionPanelFragment = new DiscussionPanelFragment();
-
-            // Start a new FragmentTransaction to add the fragment to the container view
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, discussionPanelFragment)
-                    .commit();
-        }
+     Intent intent = new Intent(CommentActivity.this, MainActivity.class);
+                intent.putExtra("GettingBackCommentActivity", true);
+                startActivity(intent);
+                finish();
     }
 }

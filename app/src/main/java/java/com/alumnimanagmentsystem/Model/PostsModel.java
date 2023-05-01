@@ -10,7 +10,7 @@ public class PostsModel {
     public String status;
     public String created_on;
     public int creater_id_alumni;
-    public int creater_id_operator;
+    public Integer creater_id_operator;
     public Alumnus alumni;
     public ArrayList<PostThreadModel> threads;
 
@@ -38,7 +38,7 @@ public class PostsModel {
         return creater_id_alumni;
     }
 
-    public int getCreater_id_operator() {
+    public Integer getCreater_id_operator() {
         return creater_id_operator;
     }
 
