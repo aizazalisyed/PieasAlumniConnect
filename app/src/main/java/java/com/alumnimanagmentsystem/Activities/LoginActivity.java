@@ -3,6 +3,8 @@ package java.com.alumnimanagmentsystem.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(userEmail.getText().toString()) || TextUtils.isEmpty(userPassword.getText().toString())){
                     Toast.makeText(LoginActivity.this, "Email / Password Required", Toast.LENGTH_SHORT).show();
                 }
+                else if (!isInternetAvailable()){
+                    Toast.makeText(LoginActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     //proceed to login
                     login();
@@ -90,8 +95,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                Log.i("login failed", t.getLocalizedMessage());
             }
         });
 
@@ -118,5 +121,10 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(key, defaultValue);
         return token;
+    }
+    private boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 }

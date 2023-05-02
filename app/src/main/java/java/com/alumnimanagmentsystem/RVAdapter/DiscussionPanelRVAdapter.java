@@ -116,6 +116,7 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                             return false;
                         }
                     })
+                    .placeholder(R.drawable.default_imag)
                     .into(holder.imageView);
 
 

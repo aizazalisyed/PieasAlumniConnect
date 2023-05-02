@@ -8,21 +8,21 @@
     android:background="@color/light_gray">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoryRecyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"
-        />
-    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsEventsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/categoryRecyclerView"
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/news_recycler_view_items"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

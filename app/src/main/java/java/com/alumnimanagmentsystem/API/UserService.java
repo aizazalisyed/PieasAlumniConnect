@@ -5,6 +5,7 @@ import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.Comment;
 import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
+import java.com.alumnimanagmentsystem.Model.EventModel;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostJobModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
@@ -50,7 +51,7 @@ public interface UserService {
     @POST("/alumni/me/avatar")
     Call<ResponseBody> postImage(@Header("Authorization") String authToken , @Part MultipartBody.Part photo);
 
-    @PATCH("/alumni/job-hCall<Alumnus> alumnusCall = RetrofitClient.getUserService().istory/{id}")
+    @PATCH("/alumni/job-history/{id}")
     Call<AlumniJobHistories> patchJobHistories(@Header("Authorization") String authToken, @Body AlumniJobHistories alumniJobHistories,@Path("id") int id);
 
     @DELETE("/alumni/job-history/{id}")
@@ -97,4 +98,7 @@ public interface UserService {
     Call<ResponseBody> createDiscussionPost( @Header("Authorization") String authToken,
                                              @Part MultipartBody.Part photo,
                                              @Part("content") RequestBody content);
+
+    @GET("/events")
+    Call<List<EventModel>> getEvents(@Header("Authorization") String authToken, @Query("limit") Integer limit, @Query("offset") Integer offset);
 }

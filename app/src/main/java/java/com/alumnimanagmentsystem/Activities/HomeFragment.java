@@ -5,33 +5,48 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
 
+import java.com.alumnimanagmentsystem.Model.EventModel;
 import java.com.alumnimanagmentsystem.Model.NewsModel;
-import java.com.alumnimanagmentsystem.RVAdapter.NewsRVAdapter;
+import java.com.alumnimanagmentsystem.Model.PostsModel;
+import java.com.alumnimanagmentsystem.RVAdapter.DiscussionPanelRVAdapter;
+import java.com.alumnimanagmentsystem.RVAdapter.EventsRVAdapter;
 import java.com.alumnimanagmentsystem.R;
+import java.com.alumnimanagmentsystem.ViewModel.DiscussionPanelViewModel;
+import java.com.alumnimanagmentsystem.ViewModel.EventViewModel;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    ArrayList<NewsModel> newsModelArrayList;
     RecyclerView recyclerViewNews;
-
-
+    EventsRVAdapter eventsRVAdapter;
+    EventViewModel eventViewModel;
+    LinearLayoutManager manager;
+    int currentItems, scrollOutItems, totalItems;
+    Boolean isScrolling = false;
+    ProgressBar progressBar;
 
 
     // TODO: Rename and change types of parameters
@@ -81,81 +96,63 @@ public class HomeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
 
-        initializeNewsData();
-
         recyclerViewNews = view.findViewById(R.id.newsEventsRecyclerView);
-        NewsRVAdapter newsRVAdapter = new NewsRVAdapter(newsModelArrayList, getContext());
-        recyclerViewNews.setAdapter(newsRVAdapter);
-        newsRVAdapter.notifyDataSetChanged();
+        eventViewModel = ViewModelProviders.of(getActivity()).get(EventViewModel.class);
+        progressBar = view.findViewById(R.id.progressBar);
+        manager = new LinearLayoutManager(getContext());
+
+        recyclerViewNews.setLayoutManager(manager);
+        recyclerViewNews.setHasFixedSize(true);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        eventViewModel.getEvents().observe(getActivity(), new Observer<List<EventModel>>() {
+            @Override
+            public void onChanged(List<EventModel> eventModels) {
+                if (eventsRVAdapter == null) {
+                    putDataIntoRecyclerView((ArrayList<EventModel>) eventModels);
+                } else {
+                   eventsRVAdapter.addItems((ArrayList<EventModel>) eventModels);
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        });
 
 
+        recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true;
+                }
+            }
 
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-    }
+                currentItems = manager.getChildCount();
+                totalItems = manager.getItemCount();
+                scrollOutItems = manager.findFirstVisibleItemPosition();
 
+                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
 
-    private void initializeNewsData(){
-
-        String title [];
-        title = new String[]{
-                "EHSAAS UG Scholarship Awardees List 2021-25",
-                "Café Mushaira 2.0",
-                "Closing Ceremony Of PIEAS Student Week 2022",
-                "Team Ascensor Bags A Bronze In Teknofest 22",
-                "Students Brings Laurels To The Country In 52nd International Physics Olympiad"
-        };
-
-        String description[];
-        description = new String[]{
-            "EHSAAS UG Scholarship Awardees List 2021-25",
-
-
-                "Cafe Mushaira 2.0', one of the most exciting literary " +
-                        "events of the year was arranged by PIEAS Literary " +
-                        "Society on November 24, 2022. The students and faculty participated in evening of"
-                ,
-
-                "Student Week - Fall semester 2022 was organized successfully by PIEAS Sportics Society (PSS)" +
-                " after a gap of 3 years, from 10th - 16th " +
-                "October, 2022. Male and female students participated",
-
-
-                "Team Ascensor is a veteran group of aspiring students from the Pakistan Institute of" +
-                        " Engineering and Applied Sciences that has " +
-                        "now made Pakistan proud twice by securing positions in Teknofest’21 and ‘22.",
-                "The 52nd International Physics Olympiad (IPhO) was organized by" +
-                        " Switzerland in online format during the period July 10 - 17, " +
-                        "2022. This year 368 students from 78 countries participated in"
-        };
-
-        int imagesID[];
-        imagesID = new int[]{
-          R.drawable.a,
-                R.drawable.b,
-                R.drawable.c,
-                R.drawable.d,
-                R.drawable.e
-        };
-
-        newsModelArrayList = new ArrayList<>();
-
-        for (int i = 0; i < title.length; i++ ){
-
-            NewsModel newsModel = new NewsModel(title[i], description[i], imagesID[i]);
-            newsModelArrayList.add(newsModel);
-        }
-
+                    isScrolling = false;
+                   eventViewModel.offset += eventViewModel.limit;
+                    eventViewModel.makeApiCall();
+                }
+            }
+        });
 
     }
-    private void initializeEventsData(){
 
-        newsModelArrayList = new ArrayList<>();
+    private void putDataIntoRecyclerView(ArrayList<EventModel> eventModelArrayList) {
 
+        Log.i("putDataIntoRecyclerView", "putDataIntoRecyclerView");
+        eventsRVAdapter = new EventsRVAdapter(eventModelArrayList, getContext());
+        recyclerViewNews.setAdapter(eventsRVAdapter);
     }
-    private void initializeAchievementsData(){
 
-        newsModelArrayList = new ArrayList<>();
-
-    }
 }
