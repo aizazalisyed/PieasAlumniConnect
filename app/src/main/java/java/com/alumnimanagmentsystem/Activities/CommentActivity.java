@@ -104,23 +104,23 @@ public class CommentActivity extends AppCompatActivity {
 
         postID = extras.getInt("postId");
 
-        discussionPanelViewModel.getPosts().observe(this, new Observer<List<PostsModel>>() {
-            @Override
-            public void onChanged(List<PostsModel> postsModelList) {
-                if(postsModelList.get(extras.getInt("position")).getThreads().size() !=0){
+        Intent intent = getIntent();
 
-                    putDataIntoRecyclerView(postsModelList.get(extras.getInt("position")).getThreads());
-                    recyclerView.setVisibility(View.VISIBLE);
-                }
-                comment_count.setText(Integer.toString(postsModelList.get(extras.getInt("position")).getThreads().size()));
-            }
-        });
+        // Retrieve the threads list from the Intent object
+        ArrayList<PostThreadModel> threads = (ArrayList<PostThreadModel>) intent.getSerializableExtra("pthreadList");
+
+        // Check if threads is empty or null
+        if (!(threads == null || threads.isEmpty())) {
+            putDataIntoRecyclerView(threads);
+            recyclerView.setVisibility(View.VISIBLE);
+            comment_count.setText(String.valueOf(threads.size()));
+        } else {
+            comment_count.setText("0");
+        }
 
         String myProfileUrl = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000"+"/alumni/avatar/me";
         GlideUrl myPicGlideUrl = new GlideUrl(myProfileUrl, new LazyHeaders.Builder().addHeader("Authorization", extras.getString("Token")).build());
         Glide.with(this).load(myPicGlideUrl).placeholder(R.drawable.default_user).into(user_photo_comment_edit_text);
-
-
 
 
         userName.setText(extras.getString("userName"));
@@ -161,7 +161,7 @@ public class CommentActivity extends AppCompatActivity {
                 int id;
                 id = item.getItemId();
                 if (id == R.id.nav_comment) {
-                   comment_input_edit_text.requestFocus();
+                    comment_input_edit_text.requestFocus();
                     showSoftKeyboard(comment_input_edit_text);
 
                 } else {
@@ -172,15 +172,15 @@ public class CommentActivity extends AppCompatActivity {
         });
 
 
-            sendButtonImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        sendButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    if(!comment_input_edit_text.getText().toString().isEmpty()){
-                        postComment(comment_input_edit_text.getText().toString());
-                    }
+                if(!comment_input_edit_text.getText().toString().isEmpty()){
+                    postComment(comment_input_edit_text.getText().toString());
                 }
-            });
+            }
+        });
 
     }
 
@@ -207,7 +207,7 @@ public class CommentActivity extends AppCompatActivity {
     }
     private void putDataIntoRecyclerView(ArrayList<PostThreadModel> postThreadModelArrayList){
 
-       commentRVAdapter = new CommentRVAdapter(postThreadModelArrayList, this);
+        commentRVAdapter = new CommentRVAdapter(postThreadModelArrayList, this);
         recyclerView.setAdapter(commentRVAdapter);
     }
     private void postComment(String commentString){
@@ -240,9 +240,9 @@ public class CommentActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-     Intent intent = new Intent(CommentActivity.this, MainActivity.class);
-                intent.putExtra("GettingBackCommentActivity", true);
-                startActivity(intent);
-                finish();
+        Intent intent = new Intent(CommentActivity.this, MainActivity.class);
+        intent.putExtra("GettingBackCommentActivity", true);
+        startActivity(intent);
+        finish();
     }
 }

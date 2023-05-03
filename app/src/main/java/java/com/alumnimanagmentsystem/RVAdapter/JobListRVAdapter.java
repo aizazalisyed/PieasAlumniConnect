@@ -38,11 +38,10 @@ public class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.View
         return new ViewHolder(view);
     }
 
-    public void addItems(List<JobModel> items) {
+    public void addItems(ArrayList<JobModel> items) {
         int startPosition = jobModelList.size();
         jobModelList = new ArrayList<>();
         jobModelList.addAll(items);
-
         notifyItemRangeInserted(startPosition, items.size());
     }
 

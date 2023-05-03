@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Activities.CommentActivity;
+import java.com.alumnimanagmentsystem.Model.PostThreadModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
 import java.com.alumnimanagmentsystem.Model.ReportPost;
 import java.com.alumnimanagmentsystem.R;
@@ -131,7 +132,6 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                         i.putExtra("userName", postsModel.getAlumni().getName());
                         i.putExtra("userDegree", postsModel.getAlumni().getDegree().getDegree_name());
                         i.putExtra("userId",String.valueOf(postsModel.getAlumni().getAlumni_id()));
-
                     }
                     else{
                         i.putExtra("userName", "Admin");
@@ -144,6 +144,13 @@ public class DiscussionPanelRVAdapter extends RecyclerView.Adapter<DiscussionPan
                     i.putExtra("Token",retrieveToken());
                     i.putExtra("commentCount",postsModel.getThreads().size());
                     i.putExtra("position", holder.getAdapterPosition());
+
+                    if (postsModel.getThreads() != null && !postsModel.getThreads().isEmpty()) {
+                        i.putExtra("pthreadList", postsModel.getThreads());
+                    } else {
+                        i.putExtra("pthreadList", (ArrayList<PostThreadModel>) null);
+                    }
+
                     context.startActivity(i);
                     Animatoo.INSTANCE.animateCard(context);
                 }

@@ -27,6 +27,7 @@ import java.com.alumnimanagmentsystem.RVAdapter.AlumniRVAdapter;
 import java.com.alumnimanagmentsystem.RVAdapter.JobListRVAdapter;
 import java.com.alumnimanagmentsystem.ViewModel.AlumniListViewModel;
 import java.com.alumnimanagmentsystem.ViewModel.JobListViewModel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 public class JobListActivity extends AppCompatActivity {
@@ -76,7 +77,7 @@ public class JobListActivity extends AppCompatActivity {
                 if (jobListRVAdapter == null) {
                     putDataIntoRecyclerView(jobModels);
                 } else {
-                    jobListRVAdapter.addItems(jobModels);
+                    jobListRVAdapter.addItems((ArrayList<JobModel>) jobModels);
                 }
                 mainProgressbar.setVisibility(View.GONE);
             }
