@@ -78,5 +78,10 @@
         <item>3.5 and above</item>
     </string-array>
 
-
+    <string-array name="searchBy">
+        <item>job_title</item>
+        <item>company_name</item>
+        <item>achievement_type</item>
+        <item>achievement_title</item>
+    </string-array>
 </resources>

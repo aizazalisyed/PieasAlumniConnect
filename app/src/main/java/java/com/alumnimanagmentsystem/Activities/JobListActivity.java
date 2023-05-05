@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,12 +19,9 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.R;
-import java.com.alumnimanagmentsystem.RVAdapter.AlumniRVAdapter;
 import java.com.alumnimanagmentsystem.RVAdapter.JobListRVAdapter;
-import java.com.alumnimanagmentsystem.ViewModel.AlumniListViewModel;
 import java.com.alumnimanagmentsystem.ViewModel.JobListViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +137,7 @@ public class JobListActivity extends AppCompatActivity {
     }
 
     private void SwitchToCreateJobActivity(){
-    Intent intent = new Intent(this, CreateJob.class);
+    Intent intent = new Intent(this, CreateJobActivity.class);
     startActivity(intent);
     }
 

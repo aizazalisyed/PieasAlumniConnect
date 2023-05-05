@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
-import java.com.alumnimanagmentsystem.Model.JobModel;
 import java.com.alumnimanagmentsystem.Model.PostJobModel;
 import java.com.alumnimanagmentsystem.R;
 import java.com.alumnimanagmentsystem.ViewModel.EligibilityDisciplineViewModel;
@@ -40,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateJob extends AppCompatActivity {
+public class CreateJobActivity extends AppCompatActivity {
 
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
@@ -81,7 +80,7 @@ public class CreateJob extends AppCompatActivity {
         viewModel.getEligibilityDisciplines().observe(this, new Observer<List<EligibilityDiscipline>>() {
             @Override
             public void onChanged(List<EligibilityDiscipline> eligibilityDisciplines) {
-                String size = String.valueOf(eligibilityDisciplines.size());
+
                 items = new CharSequence[eligibilityDisciplines.size()];
                 checkedItems = new boolean[eligibilityDisciplines.size()];
                 for (int i = 0; i < eligibilityDisciplines.size(); i++) {
@@ -92,7 +91,7 @@ public class CreateJob extends AppCompatActivity {
                 eligibilityDisciplinesEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(CreateJob.this);
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(CreateJobActivity.this);
                         mBuilder.setTitle("Select Eligibility Disciplines");
                         mBuilder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
@@ -203,7 +202,7 @@ public class CreateJob extends AppCompatActivity {
         jobLastDateToApplyEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(CreateJob.this, enddate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(CreateJobActivity.this, enddate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -214,7 +213,7 @@ public class CreateJob extends AppCompatActivity {
 
                 if(jobTitleEditText.getText().toString().isEmpty() || jobLocationEditText.getText().toString().isEmpty() || jobSectorEditText.getText().toString().isEmpty() || jobCompanyNameEditText.getText().toString().isEmpty() || eligibilityDisciplinesEditText.getText().toString().isEmpty()
                 || spinnerExperience.getSelectedItem().toString().isEmpty() || spinnerEmploymentType.getSelectedItem().toString().isEmpty() || jobLastDateToApplyEditText.getText().toString().isEmpty()){
-                    Toast.makeText(CreateJob.this, "Incomplete Information", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateJobActivity.this, "Incomplete Information", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     createJobPost();
@@ -255,7 +254,7 @@ public class CreateJob extends AppCompatActivity {
         call.enqueue(new Callback<PostJobModel>() {
             @Override
             public void onResponse(Call<PostJobModel> call, Response<PostJobModel> response) {
-                Toast.makeText(CreateJob.this, "Job Post Created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateJobActivity.this, "Job Post Created", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -266,12 +265,12 @@ public class CreateJob extends AppCompatActivity {
 
     }
     public String retrieveToken(){
-        SharedPreferences sharedPreferences = CreateJob.this.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = CreateJobActivity.this.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(key, defaultValue);
         return token;
     }
     public void returnBack(){
-        Intent intent = new Intent(CreateJob.this, JobListActivity.class);
+        Intent intent = new Intent(CreateJobActivity.this, JobListActivity.class);
         startActivity(intent);
     }
 }

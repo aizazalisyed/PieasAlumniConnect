@@ -4,6 +4,7 @@ import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
 import java.com.alumnimanagmentsystem.Model.AlumniJobHistories;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.Comment;
+import java.com.alumnimanagmentsystem.Model.Department;
 import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
 import java.com.alumnimanagmentsystem.Model.EventModel;
 import java.com.alumnimanagmentsystem.Model.JobModel;
@@ -101,4 +102,8 @@ public interface UserService {
 
     @GET("/events")
     Call<List<EventModel>> getEvents(@Header("Authorization") String authToken, @Query("limit") Integer limit, @Query("offset") Integer offset);
+
+    @GET("/departments")
+    Call<List<Department>> getDepartments(@Header("Authorization") String authToken);
+
 }

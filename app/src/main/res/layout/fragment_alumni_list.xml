@@ -5,32 +5,63 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.AlumniListFragment"
-    android:background="@color/light_gray"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/alumniRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:listitem="@layout/alumni_recycler_view_items"/>
 
-    <TextView
-        android:id="@+id/warning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Alumni List To Display"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        />
 
+        <TextView
+            android:id="@+id/searchAlumniHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:text="SEARCH ALUMNI"
+            android:textColor="@color/gradient_mid_color"
+            android:textSize="20sp"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/searchByEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/searchAlumniHeading"
+            android:spinnerMode="dialog"
+            android:focusable="false"
+            android:hint="Search By*"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            />
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchByEditText"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:hint="Search"
+            android:textSize="16dp"
+            />
+
+        <EditText
+            android:id="@+id/departmentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/searchEditText"
+            android:spinnerMode="dialog"
+            android:focusable="false"
+            android:hint="Select Department (optional)"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            />
         <ProgressBar
             android:visibility="gone"
             android:id="@+id/mainProgressbar"
@@ -40,16 +71,18 @@
             android:layout_marginBottom="60dp"
             android:layout_centerVertical="true"/>
 
-        <ProgressBar
-            android:visibility="gone"
-            android:id="@+id/progressBar"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="60dp"/>
-
-
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:text="Search"
+            android:textColor="@color/white"
+            android:layout_below="@id/departmentEditText"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"/>
     </RelativeLayout>
 
 </FrameLayout>

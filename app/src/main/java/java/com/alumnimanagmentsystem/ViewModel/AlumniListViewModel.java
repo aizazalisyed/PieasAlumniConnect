@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.Alumnus;
+import java.com.alumnimanagmentsystem.Model.Department;
 import java.com.alumnimanagmentsystem.Model.ProfilePicture;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class AlumniListViewModel extends AndroidViewModel {
     String key = "TOKEN_STRING";
     String defaultValue = "";
     MutableLiveData<List<Alumnus>> alumnusList = new MutableLiveData<>();
+    MutableLiveData<List<Department>> departmentList = new MutableLiveData<>();
     public int offset = 0;
     int limit = 15;
 
@@ -35,7 +37,7 @@ public class AlumniListViewModel extends AndroidViewModel {
         super(application);
 
         context = application;
-        makeApiCall();
+        fetchDepartments();
     }
 
     public String retrieveToken(){
@@ -43,27 +45,23 @@ public class AlumniListViewModel extends AndroidViewModel {
         String token = sharedPreferences.getString(key, defaultValue);
         return token;
     }
-
-    public void makeApiCall(){
-
-        Call<List<Alumnus>> call =  RetrofitClient.getUserService().getAllAlumni(limit,offset,retrieveToken());
-        call.enqueue(new Callback<List<Alumnus>>() {
+    private void fetchDepartments(){
+        Call<List<Department>> call = RetrofitClient.getUserService().getDepartments(retrieveToken());
+        call.enqueue(new Callback<List<Department>>() {
             @Override
-            public void onResponse(Call<List<Alumnus>> call, Response<List<Alumnus>> response) {
-
+            public void onResponse(Call<List<Department>> call, Response<List<Department>> response) {
                 if(response.isSuccessful()){
-                    alumnusList.postValue(response.body());
+                    departmentList.postValue(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Alumnus>> call, Throwable t) {
+            public void onFailure(Call<List<Department>> call, Throwable t) {
 
             }
         });
     }
-
-    public LiveData<List<Alumnus>> getAlumniList(){
-        return alumnusList;
-    }
+     public LiveData<List<Department>> getDepartment(){
+        return departmentList;
+     }
 }

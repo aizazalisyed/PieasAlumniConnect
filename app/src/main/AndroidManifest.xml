@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.CreateJob"
+            android:name=".Activities.CreateJobActivity"
             android:exported="false"
             android:parentActivityName=".Activities.JobListActivity"
             >

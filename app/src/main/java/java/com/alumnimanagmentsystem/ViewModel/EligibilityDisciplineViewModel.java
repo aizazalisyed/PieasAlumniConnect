@@ -10,10 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
-import java.com.alumnimanagmentsystem.Activities.CreateJob;
-import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.EligibilityDiscipline;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
