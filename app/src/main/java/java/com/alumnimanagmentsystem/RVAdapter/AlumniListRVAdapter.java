@@ -76,6 +76,7 @@ public class AlumniListRVAdapter extends RecyclerView.Adapter<AlumniListRVAdapte
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, AlumniDetailActivity.class);
+                i.putExtra("alumniID", alumniModel.getAlumni_id());
                 context.startActivity(i);
                 Animatoo.INSTANCE.animateSlideUp(context);
             }

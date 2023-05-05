@@ -111,5 +111,6 @@ public interface UserService {
                                       @Query("searchTerm") String searchTerm,
                                       @Query("searchBy") String searchBy,
                                       @Query("department_id") Integer department_id);
-
+    @GET("/alumni/{id}")
+    Call<Alumnus> getAlumni(@Header("Authorization") String authToken, @Path("id") int id);
 }
