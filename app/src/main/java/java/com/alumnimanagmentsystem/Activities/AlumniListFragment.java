@@ -1,46 +1,28 @@
 package java.com.alumnimanagmentsystem.Activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.com.alumnimanagmentsystem.API.RetrofitClient;
-import java.com.alumnimanagmentsystem.Model.AlumniAchievements;
-import java.com.alumnimanagmentsystem.Model.Alumnus;
 import java.com.alumnimanagmentsystem.Model.Department;
-import java.com.alumnimanagmentsystem.RVAdapter.AchievementRVAdapter;
-import java.com.alumnimanagmentsystem.RVAdapter.AlumniRVAdapter;
 import java.com.alumnimanagmentsystem.R;
 import java.com.alumnimanagmentsystem.ViewModel.AlumniListViewModel;
-import java.com.alumnimanagmentsystem.ViewModel.AlumnusViewModel;
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class AlumniListFragment extends Fragment {
@@ -48,12 +30,17 @@ public class AlumniListFragment extends Fragment {
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
     String defaultValue = "";
+    Integer departmentID;
 
     AlumniListViewModel alumniListViewModel;
     EditText departmentEditText;
     String[] departmentNames;
     String selectedDepartment;
     EditText searchByEditText;
+    EditText searchEditText;
+    private int selectedSearchOption;
+    Button searchButton;
+    List<Department> departmentsList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +55,6 @@ public class AlumniListFragment extends Fragment {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_alumni_list, container, false);
         return view;
-
     }
 
     @Override
@@ -77,6 +63,10 @@ public class AlumniListFragment extends Fragment {
 
         departmentEditText = view.findViewById(R.id.departmentEditText);
         searchByEditText = view.findViewById(R.id.searchByEditText);
+        searchEditText = view.findViewById(R.id.searchEditText);
+        searchButton = view.findViewById(R.id.searchButton);
+
+
         alumniListViewModel.getDepartment().observe(getActivity(), new Observer<List<Department>>() {
             @Override
             public void onChanged(List<Department> departments) {
@@ -85,6 +75,7 @@ public class AlumniListFragment extends Fragment {
                 for (int i = 0; i < departments.size(); i++) {
                     departmentNames[i] = departments.get(i).getDepartment_name();
                 }
+                departmentsList = departments;
             }
         });
 
@@ -100,6 +91,25 @@ public class AlumniListFragment extends Fragment {
                 showSearchByDialog();
             }
         });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(searchByEditText.getText().toString().isEmpty() && searchEditText.getText().toString().isEmpty() && departmentEditText.getText().toString().isEmpty())
+                {
+                    Toast.makeText(getContext(), "Incomplete information", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), AlumniSearchedListActivity.class);
+                    intent.putExtra("searchBy", searchByEditText.getText().toString());
+                    intent.putExtra("departmentID", departmentID);
+                    intent.putExtra("search", searchEditText.getText().toString());
+                    startActivity(intent);
+                }
+            }
+        });
+
+
     }
     // Method to display the dialog box
     private void showDepartmentDialog() {
@@ -111,6 +121,7 @@ public class AlumniListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedDepartment = departmentNames[which];
+                departmentID = which + 1;
             }
         });
 
@@ -139,7 +150,11 @@ public class AlumniListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String selectedOption = searchByArray[which];
+                selectedSearchOption = which;
+
                 searchByEditText.setText(selectedOption);
+                String[] searchHints = getResources().getStringArray(R.array.search_hints);
+               searchEditText.setHint(searchHints[selectedSearchOption]);
             }
         });
 

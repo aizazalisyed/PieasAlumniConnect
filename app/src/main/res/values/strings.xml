@@ -84,4 +84,12 @@
         <item>achievement_type</item>
         <item>achievement_title</item>
     </string-array>
+
+    <string-array name="search_hints">
+        <item>Enter Job Title</item>
+        <item>Enter Company Name</item>
+        <item>Enter Achievement Type</item>
+        <item>Enter Achievement Title</item>
+    </string-array>
+
 </resources>

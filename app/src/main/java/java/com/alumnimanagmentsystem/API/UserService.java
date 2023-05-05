@@ -106,4 +106,10 @@ public interface UserService {
     @GET("/departments")
     Call<List<Department>> getDepartments(@Header("Authorization") String authToken);
 
+    @GET("/alumni-search")
+    Call<List<Alumnus>> getAlumniList(@Header("Authorization") String authToken,
+                                      @Query("searchTerm") String searchTerm,
+                                      @Query("searchBy") String searchBy,
+                                      @Query("department_id") Integer department_id);
+
 }

@@ -33,7 +33,7 @@
             android:layout_below="@id/searchAlumniHeading"
             android:spinnerMode="dialog"
             android:focusable="false"
-            android:hint="Search By*"
+            android:hint="Search By (optional)"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             />
@@ -46,7 +46,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
-            android:hint="Search"
+            android:hint="Search Alumni"
             android:textSize="16dp"
             />
 
@@ -72,7 +72,7 @@
             android:layout_centerVertical="true"/>
 
         <Button
-            android:id="@+id/saveButton"
+            android:id="@+id/searchButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_background"
