@@ -40,6 +40,7 @@ public class AlumniListFragment extends Fragment {
     EditText searchEditText;
     private int selectedSearchOption;
     Button searchButton;
+    Button clearButton;
     List<Department> departmentsList;
 
     @Override
@@ -65,6 +66,7 @@ public class AlumniListFragment extends Fragment {
         searchByEditText = view.findViewById(R.id.searchByEditText);
         searchEditText = view.findViewById(R.id.searchEditText);
         searchButton = view.findViewById(R.id.searchButton);
+        clearButton = view.findViewById(R.id.clearButton);
 
 
         alumniListViewModel.getDepartment().observe(getActivity(), new Observer<List<Department>>() {
@@ -106,6 +108,18 @@ public class AlumniListFragment extends Fragment {
                     intent.putExtra("search", searchEditText.getText().toString());
                     startActivity(intent);
                 }
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Clear all the EditText views
+                departmentEditText.setText("");
+                searchByEditText.setText("");
+                searchEditText.setText("");
+                // Set the hint for searchByEditText to "Search Alumni"
+                searchByEditText.setHint("Search Alumni");
             }
         });
 

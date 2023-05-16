@@ -38,6 +38,11 @@ public class Alumnus implements Parcelable {
         degree = in.readParcelable(Alumnus.class.getClassLoader());
     }
 
+    public Alumnus(String phoneNumber, String country) {
+        this.phoneNumber = phoneNumber;
+        this.country = country;
+    }
+
     public static final Creator<Alumnus> CREATOR = new Creator<Alumnus>() {
         @Override
         public Alumnus createFromParcel(Parcel in) {

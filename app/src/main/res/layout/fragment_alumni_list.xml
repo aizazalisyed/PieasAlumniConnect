@@ -81,8 +81,20 @@
             android:text="Search"
             android:textColor="@color/white"
             android:layout_below="@id/departmentEditText"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="40dp" />
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:text="Clear"
+            android:textColor="@color/white"
+            android:layout_below="@id/searchButton"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"/>
+
     </RelativeLayout>
 
 </FrameLayout>

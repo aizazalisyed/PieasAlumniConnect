@@ -33,6 +33,11 @@ public class EditUserInfoDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.edit_personal_info_dialog, null);
         countryCodePicker = view.findViewById(R.id.cc);
 
+        editTextPhoneNumber = view.findViewById(R.id.editPhoneNumber);
+        editTextCountry = view.findViewById(R.id.editCountry);
+
+        editTextPhoneNumber.setHint("Phone Number");
+
         builder.setView(view)
                 .setTitle("Edit Information")
                 .setNegativeButton("cancle", new DialogInterface.OnClickListener() {
@@ -43,24 +48,20 @@ public class EditUserInfoDialog extends AppCompatDialogFragment {
                 .setPositiveButton("save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String phoneNumber = editTextPhoneNumber.getText().toString();
+                        String phoneNumber =  countryCodePicker.getFullNumberWithPlus();
                         String country = editTextCountry.getText().toString();
-                        editUserInfoDialogListener.applyTexts(phoneNumber,country);Toast.makeText(getContext(), "phone: " + countryCodePicker.getFullNumberWithPlus(), Toast.LENGTH_SHORT).show();
+                        editUserInfoDialogListener.applyTexts(phoneNumber,country);
                     }
                 });
-        editTextPhoneNumber = view.findViewById(R.id.editPhoneNumber);
-        editTextCountry = view.findViewById(R.id.editCountry);
-        editTextPhoneNumber.setText("03333040719");
-        editTextCountry.setText("Pakistan");
 
         countryCodePicker.registerPhoneNumberTextView(editTextPhoneNumber);
         countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected(Country selectedCountry) {
                 editTextCountry.setText(selectedCountry.getName());
-
             }
         });
+
         return builder.create();
     }
 

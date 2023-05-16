@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,7 +37,7 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
     List<SpecialRequest> specialRequestArrayList;
     SpecialRequestHistoryRVAdapter specialRequestHistoryRVAdapter;
     TextView warning;
-
+    ProgressBar progressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +46,11 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.requestHistoryRecyclerView);
         warning = findViewById(R.id.warningHistory);
+        progressbar = findViewById(R.id.progressbar);
 
         specialRequestArrayList = new ArrayList<>();
 
-        recyclerView.setVisibility(View.GONE);
-        warning.setVisibility(View.VISIBLE);
-
        makeApiCallForRecyclerView();
-
-            recyclerView.setVisibility(View.GONE);
-            warning.setVisibility(View.VISIBLE);
-
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -80,22 +75,23 @@ public class SpecialRequestHistoryActivity extends AppCompatActivity {
 
     public void  makeApiCallForRecyclerView(){
 
-        Call<SpecialRequests> call = RetrofitClient.getUserService().getSpecialRequests(retrieveToken());
-
-        call.enqueue(new Callback<SpecialRequests>() {
+        Call<List<SpecialRequest>> call = RetrofitClient.getUserService().getSpecialRequests(retrieveToken());
+        call.enqueue(new Callback<List<SpecialRequest>>() {
             @Override
-            public void onResponse(Call<SpecialRequests> call, Response<SpecialRequests> response) {
-                SpecialRequests specialRequests = response.body();
-                specialRequestArrayList = new ArrayList<>(Arrays.asList(specialRequests.getSpecial_requests()));
-                putDataIntoRecyclerView(specialRequestArrayList);
-                if(specialRequests.getSpecial_requests().length==0){
+            public void onResponse(Call<List<SpecialRequest>> call, Response<List<SpecialRequest>> response) {
+                progressbar.setVisibility(View.GONE);
+                List<SpecialRequest> specialRequests = response.body();
+                putDataIntoRecyclerView(specialRequests);
+
+                assert specialRequests != null;
+                if(specialRequests.isEmpty()){
                     warning.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
             }
 
             @Override
-            public void onFailure(Call<SpecialRequests> call, Throwable t) {
+            public void onFailure(Call<List<SpecialRequest>> call, Throwable t) {
 
             }
         });

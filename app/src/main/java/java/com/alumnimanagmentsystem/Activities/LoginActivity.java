@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     String fileName = "My_Pref";
     String key = "TOKEN_STRING";
     String defaultValue = "";
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         userEmail = findViewById(R.id.inputEmail);
         userPassword = findViewById(R.id.inputPassword);
+        progressBar = findViewById(R.id.progressBar);
+
+        progressBar.setVisibility(View.GONE);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
                 }
                 else{
+
+                    progressBar.setVisibility(View.VISIBLE);
                     //proceed to login
                     login();
                 }
@@ -83,6 +90,9 @@ public class LoginActivity extends AppCompatActivity {
         loginResponseCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
+                progressBar.setVisibility(View.GONE);
+
                 if(response.isSuccessful()){
                     Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     saveToken(response.body().getToken());

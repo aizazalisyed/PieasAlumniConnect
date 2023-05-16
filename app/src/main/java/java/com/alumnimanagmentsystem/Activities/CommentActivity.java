@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +13,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,21 +33,17 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.com.alumnimanagmentsystem.API.RetrofitClient;
 import java.com.alumnimanagmentsystem.Model.Comment;
-import java.com.alumnimanagmentsystem.Model.CommentActivityRVModel;
 import java.com.alumnimanagmentsystem.Model.PostThreadModel;
 import java.com.alumnimanagmentsystem.Model.PostsModel;
 import java.com.alumnimanagmentsystem.RVAdapter.CommentRVAdapter;
 import java.com.alumnimanagmentsystem.R;
-import java.com.alumnimanagmentsystem.RVAdapter.DiscussionPanelRVAdapter;
 import java.com.alumnimanagmentsystem.ViewModel.DiscussionPanelViewModel;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class CommentActivity extends AppCompatActivity {
 
@@ -104,19 +97,8 @@ public class CommentActivity extends AppCompatActivity {
 
         postID = extras.getInt("postId");
 
-        Intent intent = getIntent();
+        getPost(extras.getInt("postId"));
 
-        // Retrieve the threads list from the Intent object
-        ArrayList<PostThreadModel> threads = (ArrayList<PostThreadModel>) intent.getSerializableExtra("pthreadList");
-
-        // Check if threads is empty or null
-        if (!(threads == null || threads.isEmpty())) {
-            putDataIntoRecyclerView(threads);
-            recyclerView.setVisibility(View.VISIBLE);
-            comment_count.setText(String.valueOf(threads.size()));
-        } else {
-            comment_count.setText("0");
-        }
 
         String myProfileUrl = "http://ec2-3-134-111-243.us-east-2.compute.amazonaws.com:3000"+"/alumni/avatar/me";
         GlideUrl myPicGlideUrl = new GlideUrl(myProfileUrl, new LazyHeaders.Builder().addHeader("Authorization", extras.getString("Token")).build());
@@ -184,6 +166,38 @@ public class CommentActivity extends AppCompatActivity {
 
     }
 
+
+    private void getPost(int id){
+
+        Call<PostsModel> call = RetrofitClient.getUserService().getPost(retrieveToken(), id);
+
+        call.enqueue(new Callback<PostsModel>() {
+            @Override
+            public void onResponse(Call<PostsModel> call, Response<PostsModel> response) {
+
+                if(response.isSuccessful()){
+                    ArrayList<PostThreadModel> postThreadModel = response.body().getThreads();
+
+                    if(postThreadModel != null){
+                        putDataIntoRecyclerView(postThreadModel);
+                        comment_count.setText(String.valueOf(postThreadModel.size()));
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        recyclerView.setVisibility(View.GONE);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PostsModel> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void reportComment() {
         new AlertDialog.Builder(this).setTitle("Report Post").setMessage("Are you sure you want to report this post?")
 
@@ -245,4 +259,6 @@ public class CommentActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 }

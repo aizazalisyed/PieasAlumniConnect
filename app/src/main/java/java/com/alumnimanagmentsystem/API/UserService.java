@@ -65,7 +65,7 @@ public interface UserService {
     Call<AlumniAchievements> patchAchievement(@Header("Authorization") String authToken, @Body AlumniAchievements alumniAchievements,@Path("id") int id);
 
     @GET("/me/special-requests")
-    Call<SpecialRequests> getSpecialRequests(@Header("Authorization") String authToken);
+    Call<List<SpecialRequest>> getSpecialRequests(@Header("Authorization") String authToken);
 
     @POST("/special-requests")
     Call<SpecialRequest> postSpecialRequest(@Header("Authorization") String authToken, @Body SpecialRequest specialRequest);
@@ -113,4 +113,10 @@ public interface UserService {
                                       @Query("department_id") Integer department_id);
     @GET("/alumni/{id}")
     Call<Alumnus> getAlumni(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("/posts/{id}")
+    Call<PostsModel> getPost(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @PATCH("/alumni/me")
+    Call<Alumnus> PatchAlumnus(@Header("Authorization") String authToken, @Body Alumnus alumnus);
 }

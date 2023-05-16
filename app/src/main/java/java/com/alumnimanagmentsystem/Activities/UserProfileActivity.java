@@ -259,6 +259,7 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
         if(country.isEmpty()==false) {
             this.country.setText(country);
         }
+        updateInfo(country, phoneNumber);
     }
     public void  MakeapiCallForRecyclerView() {
 
@@ -327,6 +328,21 @@ public class UserProfileActivity extends AppCompatActivity implements EditUserIn
             }
         });
     }
+     private void updateInfo(String country, String phone){
 
+        Alumnus alumnus = new Alumnus(phone, country);
 
+        Call<Alumnus> call = RetrofitClient.getUserService().PatchAlumnus(retrieveToken(), alumnus);
+        call.enqueue(new Callback<Alumnus>() {
+            @Override
+            public void onResponse(Call<Alumnus> call, Response<Alumnus> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Alumnus> call, Throwable t) {
+
+            }
+        });
+     }
 }
